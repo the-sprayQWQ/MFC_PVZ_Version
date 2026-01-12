@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MFC_PVZ_Version/MFC_PVZ_Version.vcxproj" />
+</Solution>
