@@ -1,6 +1,7 @@
 #pragma once
 #include "../readwrite/memory.h"
 #include "../../Global.h"
+#include <stdio.h>
 class pvzManager :
     public memory
 {

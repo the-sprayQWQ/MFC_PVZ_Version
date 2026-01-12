@@ -99,12 +99,6 @@ DWORD WINAPI MainLogicThread(LPVOID lpThreadParameter) {
 	VersionResult = CheckVersion();
 	Plants plant;
 	plant.DoModal();
-    HMODULE hModule = NULL;
-    GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCTSTR)&MainLogicThread, &hModule);
-    if (hModule != NULL)
-    {
-        FreeLibraryAndExitThread(hModule, 0);
-    }
 	return 1;
 }
 
