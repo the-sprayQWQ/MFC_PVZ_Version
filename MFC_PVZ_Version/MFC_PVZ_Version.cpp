@@ -92,6 +92,7 @@ int CheckVersion() {
 
     return -1;
 }
+DWORD WINAPI MainLogicThread(LPVOID lpThreadParameter) {
 
 // CMFCPVZVersionApp 初始化
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -111,5 +112,6 @@ int CheckVersion() {
 BOOL CMFCPVZVersionApp::InitInstance()
 {
 	CWinApp::InitInstance();
+    ::CreateThread(0,0, MainLogicThread,0,0,0);
 	return TRUE;
 }
