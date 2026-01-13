@@ -42,7 +42,6 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_FLOWEREAT, &Plants::FlowerEat)
 	ON_BN_CLICKED(IDC_BUTTON5, &Plants::ChangePlantColor)
 	ON_BN_CLICKED(IDC_BUTTON6, &Plants::RestorePlantColor)
-
 END_MESSAGE_MAP()
 
 
@@ -66,6 +65,21 @@ BOOL Plants::OnInitDialog()
 		SetWindowText(L"植物大战僵尸辅助 - 未知版本");
 	}
 
+	::SendMessage(GetDlgItem(IDC_EDIT1)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"红 (0-255)");
+
+	::SendMessage(GetDlgItem(IDC_EDIT2)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"绿 (0-255)");
+
+	::SendMessage(GetDlgItem(IDC_EDIT3)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"蓝 (0-255)");
+
+	::SendMessage(GetDlgItem(IDC_EDIT4)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物所在列");
+
+	::SendMessage(GetDlgItem(IDC_EDIT5)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物所在行");
+
+	::SendMessage(GetDlgItem(IDC_EDIT6)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物ID");
+
+	::SendMessage(GetDlgItem(IDC_EDIT7)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸行数");
+
+	::SendMessage(GetDlgItem(IDC_EDIT8)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸ID");
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -80,8 +94,10 @@ void Plants::SetSun()
 void Plants::AddZombies()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	int Row = GetDlgItemInt(IDC_EDIT7, NULL, FALSE);
+	int zType = GetDlgItemInt(IDC_EDIT8, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.AddZombies(0, 0);
+	pvzManager.AddZombies(Row, zType);
 }
 
 void Plants::Cooldown()
@@ -179,8 +195,11 @@ void Plants::PlantSpeed()
 void Plants::SetPlant()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	int Column = GetDlgItemInt(IDC_EDIT4, NULL, FALSE);
+	int Row = GetDlgItemInt(IDC_EDIT5, NULL, FALSE);
+	int pType = GetDlgItemInt(IDC_EDIT6, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.SetPlant(0,0,49);
+	pvzManager.SetPlant(Column, Row, pType);
 }
 
 void Plants::FlowerEat()
@@ -204,8 +223,11 @@ void Plants::FlowerEat()
 void Plants::ChangePlantColor()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	int Red = GetDlgItemInt(IDC_EDIT1, NULL, FALSE);
+	int Green = GetDlgItemInt(IDC_EDIT2, NULL, FALSE);
+	int Blue = GetDlgItemInt(IDC_EDIT3, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.ChangePlantColor(255,0,255);
+	pvzManager.ChangePlantColor(Red, Green, Blue);
 }
 
 void Plants::RestorePlantColor()
@@ -214,3 +236,4 @@ void Plants::RestorePlantColor()
 	pvzManager pvzManager;
 	pvzManager.restorePlantColor();
 }
+

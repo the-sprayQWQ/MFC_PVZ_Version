@@ -121,8 +121,7 @@ void pvzManager::ChangePlantColor(int Red, int Green, int Blue)
 {
 	uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 	WriteByte((GameModuleAddress + 0x636E4), 0x74);
-	static bool isHooked = false;
-	if (!isHooked && VersionResult == 0) {
+	if (VersionResult == 0) {
 		s_Red = Red;
 		s_Green = Green;
 		s_Blue = Blue;
@@ -131,7 +130,6 @@ void pvzManager::ChangePlantColor(int Red, int Green, int Blue)
 		MH_Initialize();
 		MH_CreateHook((LPVOID)TargetAddress,&PlantColorHOOK,NULL);
 		MH_EnableHook((LPVOID)TargetAddress);
-		isHooked = true;
 	}
 }
 
@@ -140,6 +138,8 @@ void pvzManager::restorePlantColor()
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x636E4), 0x75);
+		uintptr_t TargetAddress = GameModuleAddress + 0x636E6;
+		MH_DisableHook((LPVOID)TargetAddress);
 	}
 }
 
