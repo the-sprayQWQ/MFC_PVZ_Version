@@ -52,6 +52,20 @@ void pvzManager::AddZombies(int row, int zType)
 			popad
 		}
 	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
+		uintptr_t targetObj = Read<uintptr_t>((SeasonVersionGameBaseAddress + 0x868));
+		__asm {
+			pushad
+			push row
+			push zType
+			mov eax, targetObj
+			mov ebx, 0x00411290
+			call ebx
+			popad
+		}
+	}
 
 }
 
@@ -63,6 +77,10 @@ void pvzManager::EnableNoCooldown()
 	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x97516), 0x01);
+	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x97516), 0x01);
 	}
 }
@@ -77,6 +95,10 @@ void pvzManager::DisableNoCooldown()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
 		WriteByte((GameModuleAddress + 0x97516), 0x00);
 	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x97516), 0x00);
+	}
 }
 
 void pvzManager::EnableAutoCollect()
@@ -87,6 +109,10 @@ void pvzManager::EnableAutoCollect()
 	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x352F1), 0x01);
+	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x352F1), 0x01);
 	}
 }
@@ -101,6 +127,10 @@ void pvzManager::DisableAutoCollect()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
 		WriteByte((GameModuleAddress + 0x352F1), 0x00);
 	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x352F1), 0x00);
+	}
 }
 
 void pvzManager::EnablePeaDamage()
@@ -113,6 +143,10 @@ void pvzManager::EnablePeaDamage()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
 		WriteByte((GameModuleAddress + 0x76B7B), 0x00);
 	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x76B7B), 0x00);
+	}
 }
 
 void pvzManager::DisablePeaDamage()
@@ -123,6 +157,10 @@ void pvzManager::DisablePeaDamage()
 	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x76B7B), 0x01);
+	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x76B7B), 0x01);
 	}
 }
@@ -138,6 +176,10 @@ void pvzManager::EnableNoPause()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
 		WriteByte((GameModuleAddress + 0x540D9), 0x01);
 	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x540D9), 0x01);
+	}
 }
 
 void pvzManager::DisableNoPause()
@@ -149,6 +191,10 @@ void pvzManager::DisableNoPause()
 	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x540D9), 0x00);
+	}
+	else {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x540D9), 0x00);
 	}
 }
