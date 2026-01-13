@@ -203,6 +203,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="minhook\include\MinHook.h" />
     <ClInclude Include="module\readwrite\memory.h" />
     <ClInclude Include="MFC_PVZ_Version.h" />
     <ClInclude Include="pch.h" />
@@ -213,6 +214,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFC_PVZ_Version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="minhook\lib\libMinHook.x64.lib" />
+    <Library Include="minhook\lib\libMinHook.x86.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

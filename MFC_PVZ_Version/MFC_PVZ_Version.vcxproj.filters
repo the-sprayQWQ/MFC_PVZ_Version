@@ -19,6 +19,9 @@
     <Filter Include="manager">
       <UniqueIdentifier>{869e7d04-65cb-496e-81c2-23d55a746314}</UniqueIdentifier>
     </Filter>
+    <Filter Include="minhook">
+      <UniqueIdentifier>{3dc96f69-13ae-4da4-a39d-70886a855459}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_PVZ_Version.cpp">
@@ -73,10 +76,21 @@
     <ClInclude Include="module\manage\pvzManager.h">
       <Filter>manager</Filter>
     </ClInclude>
+    <ClInclude Include="minhook\include\MinHook.h">
+      <Filter>minhook</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFC_PVZ_Version.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="minhook\lib\libMinHook.x64.lib">
+      <Filter>minhook</Filter>
+    </Library>
+    <Library Include="minhook\lib\libMinHook.x86.lib">
+      <Filter>minhook</Filter>
+    </Library>
   </ItemGroup>
 </Project>

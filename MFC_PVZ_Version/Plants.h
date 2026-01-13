@@ -29,4 +29,10 @@ public:
 	afx_msg void AutoCollect();
 	afx_msg void PeaDamage();
 	afx_msg void NoPause();
+	afx_msg void GetProps();
+	afx_msg void PlantSpeed();
+	afx_msg void SetPlant();
+	afx_msg void FlowerEat();
+	afx_msg void ChangePlantColor();
+	afx_msg void RestorePlantColor();
 };

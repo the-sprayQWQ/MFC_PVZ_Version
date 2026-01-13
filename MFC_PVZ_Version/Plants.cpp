@@ -36,6 +36,13 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_AUTOCOLLECT, &Plants::AutoCollect)
 	ON_BN_CLICKED(IDC_PEADAMAGE, &Plants::PeaDamage)
 	ON_BN_CLICKED(IDC_NOPAUSE, &Plants::NoPause)
+	ON_BN_CLICKED(IDC_BUTTON3, &Plants::GetProps)
+	ON_BN_CLICKED(IDC_PLANTSPEED, &Plants::PlantSpeed)
+	ON_BN_CLICKED(IDC_BUTTON4, &Plants::SetPlant)
+	ON_BN_CLICKED(IDC_FLOWEREAT, &Plants::FlowerEat)
+	ON_BN_CLICKED(IDC_BUTTON5, &Plants::ChangePlantColor)
+	ON_BN_CLICKED(IDC_BUTTON6, &Plants::RestorePlantColor)
+
 END_MESSAGE_MAP()
 
 
@@ -143,4 +150,67 @@ void Plants::NoPause()
 		pvzManager pvzManager;
 		pvzManager.DisableNoPause();
 	}
+}
+
+void Plants::GetProps()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.GetProps(6);
+}
+
+void Plants::PlantSpeed()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_PLANTSPEED))->GetCheck();
+
+	if (state == 1) {
+		// 勾选：调用开启函数
+		pvzManager pvzManager;
+		pvzManager.EnablePlantSpeed();
+	}
+	else {
+		// 取消勾选：调用还原函数
+		pvzManager pvzManager;
+		pvzManager.DisablePlantSpeed();
+	}
+}
+
+void Plants::SetPlant()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.SetPlant(0,0,49);
+}
+
+void Plants::FlowerEat()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	int state = ((CButton*)GetDlgItem(IDC_FLOWEREAT))->GetCheck();
+
+	if (state == 1) {
+		// 勾选：调用开启函数
+		pvzManager pvzManager;
+		pvzManager.EnableFlowerEat();
+	}
+	else {
+		// 取消勾选：调用还原函数
+		pvzManager pvzManager;
+		pvzManager.DisableFlowerEat();
+	}
+}
+
+void Plants::ChangePlantColor()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.ChangePlantColor(255,0,255);
+}
+
+void Plants::RestorePlantColor()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.restorePlantColor();
 }
