@@ -71,9 +71,9 @@ BOOL Plants::OnInitDialog()
 
 	::SendMessage(GetDlgItem(IDC_EDIT3)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"蓝 (0-255)");
 
-	::SendMessage(GetDlgItem(IDC_EDIT4)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物所在列");
+	::SendMessage(GetDlgItem(IDC_EDIT4)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物列");
 
-	::SendMessage(GetDlgItem(IDC_EDIT5)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物所在行");
+	::SendMessage(GetDlgItem(IDC_EDIT5)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物行");
 
 	::SendMessage(GetDlgItem(IDC_EDIT6)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物ID");
 

@@ -79,6 +79,14 @@ void pvzManager::GetProps(int pType)
 		uintptr_t targetObj = Read<uintptr_t>((ChineseVersionGameBaseAddress + 0x768));
 		getProps((void*)targetObj, 0, 0x3C, pType, 0);
 	}
+	else if (VersionResult == 1) {
+		typedef void(__thiscall* GetProps)(void* thisPtr, int pos, int FixValue, int type, int zero);
+		GetProps getProps = (GetProps)0x0040FF90;
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
+		uintptr_t targetObj = Read<uintptr_t>((SteamVersionGameBaseAddress + 0x868));
+		getProps((void*)targetObj, 0, 0x3C, pType, 0);
+	}
 
 
 }
@@ -96,6 +104,21 @@ void pvzManager::SetPlant(int column, int row, int pType)
 			mov edi, dword ptr ds : [edi + 0x768]
 			push edi
 			mov ebx, 0x0040D120
+			call ebx
+			popad
+		}
+	}
+	else if (VersionResult == 1) {
+		__asm {
+			pushad
+			push 0xFFFFFFFF
+			push pType
+			mov eax, row
+			push column
+			mov edi, dword ptr ds : [0x00731C50]
+			mov edi, dword ptr ds : [edi + 0x868]
+			push edi
+			mov ebx, 0x004105A0
 			call ebx
 			popad
 		}
@@ -119,9 +142,9 @@ void _declspec(naked) PlantColorHOOK() {
 
 void pvzManager::ChangePlantColor(int Red, int Green, int Blue)
 {
-	uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-	WriteByte((GameModuleAddress + 0x636E4), 0x74);
 	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x636E4), 0x74);
 		s_Red = Red;
 		s_Green = Green;
 		s_Blue = Blue;
@@ -130,6 +153,12 @@ void pvzManager::ChangePlantColor(int Red, int Green, int Blue)
 		MH_Initialize();
 		MH_CreateHook((LPVOID)TargetAddress,&PlantColorHOOK,NULL);
 		MH_EnableHook((LPVOID)TargetAddress);
+	}
+	else if(VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x69AF6), Red);
+		WriteByte((GameModuleAddress + 0x69AF1), Green);
+		WriteByte((GameModuleAddress+0x69AEC),Blue);
 	}
 }
 
@@ -140,6 +169,12 @@ void pvzManager::restorePlantColor()
 		WriteByte((GameModuleAddress + 0x636E4), 0x75);
 		uintptr_t TargetAddress = GameModuleAddress + 0x636E6;
 		MH_DisableHook((LPVOID)TargetAddress);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x69AF6), 0xFF);
+		WriteByte((GameModuleAddress + 0x69AF1), 0xFF);
+		WriteByte((GameModuleAddress + 0x69AEC), 0xFF);
 	}
 }
 
@@ -279,6 +314,10 @@ void pvzManager::EnablePlantSpeed()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x64A97),0x84);
 	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x6AEC5), 0x84);
+	}
 }
 
 void pvzManager::DisablePlantSpeed()
@@ -286,6 +325,10 @@ void pvzManager::DisablePlantSpeed()
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x64A97), 0x85);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x6AEC5), 0x85);
 	}
 }
 
@@ -296,6 +339,13 @@ void pvzManager::EnableFlowerEat()
 		WriteByte((GameModuleAddress + 0x6324C), 0x31);
 		WriteByte((GameModuleAddress + 0x6324E), 0x90);
 	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x69648), 0x83);
+		WriteByte((GameModuleAddress + 0x69649), 0x67);
+		WriteByte((GameModuleAddress + 0x6964A), 0x54);
+		WriteByte((GameModuleAddress + 0x6964B), 0x00);
+	}
 }
 
 void pvzManager::DisableFlowerEat()
@@ -304,6 +354,13 @@ void pvzManager::DisableFlowerEat()
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x6324C), 0x83);
 		WriteByte((GameModuleAddress + 0x6324E), 0xFF);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		WriteByte((GameModuleAddress + 0x69648), 0x48);
+		WriteByte((GameModuleAddress + 0x69649), 0x89);
+		WriteByte((GameModuleAddress + 0x6964A), 0x47);
+		WriteByte((GameModuleAddress + 0x6964B), 0x54);
 	}
 }
 
