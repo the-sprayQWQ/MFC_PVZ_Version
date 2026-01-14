@@ -42,6 +42,10 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_FLOWEREAT, &Plants::FlowerEat)
 	ON_BN_CLICKED(IDC_BUTTON5, &Plants::ChangePlantColor)
 	ON_BN_CLICKED(IDC_BUTTON6, &Plants::RestorePlantColor)
+	ON_BN_CLICKED(IDC_CHANGEZOMBIE, &Plants::ChangeZombie)
+	ON_BN_CLICKED(IDC_CHANGEPEA, &Plants::ChangePea)
+
+	ON_BN_CLICKED(IDC_CHANGENUT, &Plants::ChangeNut)
 END_MESSAGE_MAP()
 
 
@@ -80,6 +84,8 @@ BOOL Plants::OnInitDialog()
 	::SendMessage(GetDlgItem(IDC_EDIT7)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸行数");
 
 	::SendMessage(GetDlgItem(IDC_EDIT8)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸ID");
+
+	::SendMessage(GetDlgItem(IDC_EDIT9)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"道具ID");
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -171,8 +177,9 @@ void Plants::NoPause()
 void Plants::GetProps()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	int zType = GetDlgItemInt(IDC_EDIT9, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.GetProps(6);
+	pvzManager.GetProps(zType);
 }
 
 void Plants::PlantSpeed()
@@ -237,3 +244,45 @@ void Plants::RestorePlantColor()
 	pvzManager.restorePlantColor();
 }
 
+
+void Plants::ChangeZombie()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_CHANGEZOMBIE))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableChangeZombie(0,0);
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableChangeZombie();
+	}
+}
+
+void Plants::ChangePea()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_CHANGEPEA))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableChangePea(1);
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableChangePea();
+	}
+}
+
+void Plants::ChangeNut()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_CHANGENUT))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableChangeNut();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableChangeNut();
+	}
+}

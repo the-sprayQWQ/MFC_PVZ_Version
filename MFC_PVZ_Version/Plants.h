@@ -35,4 +35,7 @@ public:
 	afx_msg void FlowerEat();
 	afx_msg void ChangePlantColor();
 	afx_msg void RestorePlantColor();
+	afx_msg void ChangeZombie();
+	afx_msg void ChangePea();
+	afx_msg void ChangeNut();
 };

@@ -21,6 +21,20 @@ public:
     //修改颜色HOOK返回的地址
     static uintptr_t s_PlantColorRetAddress;
 
+    //僵尸行数和种类
+    static int s_zType;
+    static int s_row;
+    //更改僵尸种类和出现位置返回地址
+    static uintptr_t s_ChangeZombieRetAddress;
+
+    //豌豆子弹类型
+    static int s_pType;
+    //修改豌豆类型返回地址
+    static uintptr_t s_ChangePeaRetAddress;
+    //修改建国变窝瓜返回地址
+    static uintptr_t s_ChangeNutRetAddress;
+
+
     //设置阳光
     void SetSunlight(int value);
     //哪行召唤什么僵尸
@@ -50,6 +64,15 @@ public:
     //开启与关闭大嘴花无咀嚼
     void EnableFlowerEat();
     void DisableFlowerEat();
+    //开启与关闭修改僵尸出现行数和种类
+    void EnableChangeZombie(int row,int zType);
+    void DisableChangeZombie();
+    //开启与关闭修改豌豆子弹
+    void EnableChangePea(int pType);
+    void DisableChangePea();
+    //开启与关闭建国变窝瓜
+    void EnableChangeNut();
+    void DisableChangeNut();
     
 };
 
