@@ -448,6 +448,20 @@ void _declspec(naked) ChineseVersionChangeZombie() {
 		jmp[pvzManager::s_ChangeZombieRetAddress]
 	}
 }
+void _declspec(naked) SteamVersionChangeZombie() {
+	__asm {
+		pushad
+		push[pvzManager::s_row]
+		push[pvzManager::s_zType]
+		mov eax, dword ptr ds : [0x00731C50]
+		mov eax, dword ptr ds : [eax + 0x868]
+		mov eax, eax
+		mov ebx, 0x00411290
+		call ebx
+		popad
+		jmp[pvzManager::s_ChangeZombieRetAddress]
+	}
+}
 
 void pvzManager::EnableChangeZombie(int row, int zType)
 {
@@ -461,6 +475,16 @@ void pvzManager::EnableChangeZombie(int row, int zType)
 		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangeZombie, NULL);
 		MH_EnableHook((LPVOID)TargetAddress);
 	}
+	else if(VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		s_row = row;
+		s_zType = zType;
+		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
+		s_ChangeZombieRetAddress = TargetAddress + 9;
+		MH_Initialize();
+		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangeZombie, NULL);
+		MH_EnableHook((LPVOID)TargetAddress);
+	}
 
 }
 
@@ -471,12 +495,24 @@ void pvzManager::DisableChangeZombie()
 		uintptr_t TargetAddress = GameModuleAddress + 0x13055;
 		MH_DisableHook((LPVOID)TargetAddress);
 	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
+		MH_DisableHook((LPVOID)TargetAddress);
+	}
 }
 
 int pvzManager::s_pType = 0;
 uintptr_t pvzManager::s_ChangePeaRetAddress = 0;
 void _declspec(naked) ChineseVersionChangePea() {
 	__asm {
+		pushad
+		call rand
+		mov ecx, 13
+		xor edx, edx
+		div ecx
+		mov pvzManager::s_pType, edx
+		popad
 		push[pvzManager::s_pType]
 		mov eax, [ebp + 4]
 		push ebx
@@ -490,16 +526,45 @@ void _declspec(naked) ChineseVersionChangePea() {
 		jmp[pvzManager::s_ChangePeaRetAddress]
 	}
 }
+void _declspec(naked) SteamVersionChangePea() {
+	__asm {
+		pushad
+		call rand
+		mov ecx, 13
+		xor edx, edx
+		div ecx
+		mov pvzManager::s_pType, edx
+		popad
+		push[pvzManager::s_pType]
+		mov eax, [ebp + 4]
+		push ebx
+		sub ecx, 01
+		push ecx
+		push esi
+		push edi
+		mov ebx, 0x00410BA0
+		call ebx
+		mov[eax + 0x74], 01
+		jmp[pvzManager::s_ChangePeaRetAddress]
+	}
+}
 
 void pvzManager::EnableChangePea(int pType)
 {
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		s_pType = pType;
 		uintptr_t TargetAddress = GameModuleAddress + 0x672A5;
 		s_ChangePeaRetAddress = TargetAddress + 0x10;
 		MH_Initialize();
 		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangePea, NULL);
+		MH_EnableHook((LPVOID)TargetAddress);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
+		s_ChangePeaRetAddress = TargetAddress + 0x10;
+		MH_Initialize();
+		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangePea, NULL);
 		MH_EnableHook((LPVOID)TargetAddress);
 	}
 
@@ -510,6 +575,11 @@ void pvzManager::DisableChangePea()
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		uintptr_t TargetAddress = GameModuleAddress + 0x672A5;
+		MH_DisableHook((LPVOID)TargetAddress);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
 		MH_DisableHook((LPVOID)TargetAddress);
 	}
 }
@@ -527,6 +597,18 @@ void _declspec(naked) ChineseVersionChangeNut() {
 	}
 }
 
+void _declspec(naked) SteamVersionChangeNut() {
+	__asm {
+		cmp dword ptr[esi + 0x40], 0x32
+		jg originalCode
+		mov[esi + 0x24], 0x11
+		originalCode:
+		add dword ptr[esi + 0x40], -04
+			mov ecx, [esi + 0x40]
+			jmp[pvzManager::s_ChangeNutRetAddress]
+	}
+}
+
 void pvzManager::EnableChangeNut()
 {
 	if (VersionResult == 0) {
@@ -537,6 +619,14 @@ void pvzManager::EnableChangeNut()
 		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangeNut, NULL);
 		MH_EnableHook((LPVOID)TargetAddress);
 	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
+		s_ChangeNutRetAddress = TargetAddress + 7;
+		MH_Initialize();
+		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangeNut, NULL);
+		MH_EnableHook((LPVOID)TargetAddress);
+	}
 }
 
 void pvzManager::DisableChangeNut()
@@ -544,6 +634,11 @@ void pvzManager::DisableChangeNut()
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		uintptr_t TargetAddress = GameModuleAddress + 0x12FCF0;
+		MH_DisableHook((LPVOID)TargetAddress);
+	}
+	else if (VersionResult == 1) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
 		MH_DisableHook((LPVOID)TargetAddress);
 	}
 }
