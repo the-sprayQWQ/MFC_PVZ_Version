@@ -40,4 +40,6 @@ public:
 	afx_msg void ChangeNut();
 	afx_msg void NoCrater();
 	afx_msg void InfinityFreeze();
+	afx_msg void FlowerAttck();
+	afx_msg void MineeTime();
 };

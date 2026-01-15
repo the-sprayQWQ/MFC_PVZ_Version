@@ -79,6 +79,12 @@ public:
     //开启与关闭寒冰菇无限冻结
     void EnableInfinityFreeze();
     void DisableInfinityFreeze();
+    //开启与关闭大嘴花全屏攻击
+    void EnableFlowerAttck();
+    void DisableFlowerAttck();
+    //开启与关闭土豆雷出土时间
+    void EnableMineeTime();
+    void DisableMineeTime();
     
 };
 

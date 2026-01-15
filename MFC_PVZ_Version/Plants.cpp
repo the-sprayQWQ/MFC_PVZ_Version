@@ -47,6 +47,8 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_CHANGENUT, &Plants::ChangeNut)
 	ON_BN_CLICKED(IDC_NOCRATER, &Plants::NoCrater)
 	ON_BN_CLICKED(IDC_INFINITYFREEZE, &Plants::InfinityFreeze)
+	ON_BN_CLICKED(IDC_FLOWERATTCK, &Plants::FlowerAttck)
+	ON_BN_CLICKED(IDC_MINEETIME, &Plants::MineeTime)
 END_MESSAGE_MAP()
 
 
@@ -313,5 +315,33 @@ void Plants::InfinityFreeze()
 	else {
 		pvzManager pvzManager;
 		pvzManager.DisableInfinityFreeze();
+	}
+}
+
+void Plants::FlowerAttck()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_FLOWERATTCK))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableFlowerAttck();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableFlowerAttck();
+	}
+}
+
+void Plants::MineeTime()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_MINEETIME))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableMineeTime();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableMineeTime();
 	}
 }

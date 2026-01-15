@@ -744,7 +744,7 @@ void pvzManager::EnableInfinityFreeze()
 {
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x12B421),0x01);
+		WriteByte((GameModuleAddress + 0x12B421), 0x01);
 	}
 }
 
@@ -753,6 +753,40 @@ void pvzManager::DisableInfinityFreeze()
 	if (VersionResult == 0) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
 		WriteByte((GameModuleAddress + 0x12B421), 0xFF);
+	}
+}
+
+void pvzManager::EnableFlowerAttck()
+{
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteBytes((GameModuleAddress + 0x676C2), { 0x90,0x90,0x90,0x90,0x90,0x90 });
+		WriteBytes((GameModuleAddress + 0x677DA), { 0x90,0x90,0x90,0x90,0x90,0x90 });
+	}
+}
+
+void pvzManager::DisableFlowerAttck()
+{
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteBytes((GameModuleAddress + 0x676C2), { 0x0F,0x85,0xBC,0x01,0x00,0x00 });
+		WriteBytes((GameModuleAddress + 0x677DA), { 0x0F,0x8C,0xA1,0x00,0x00,0x00 });
+	}
+}
+
+void pvzManager::EnableMineeTime()
+{
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x5FE54),0x84);
+	}
+}
+
+void pvzManager::DisableMineeTime()
+{
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		WriteByte((GameModuleAddress + 0x5FE54), 0x85);
 	}
 }
 
