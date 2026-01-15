@@ -73,6 +73,12 @@ public:
     //开启与关闭建国变窝瓜
     void EnableChangeNut();
     void DisableChangeNut();
+    //开启与关闭毁灭菇不留弹坑
+    void EnableNoCrater();
+    void DisableNoCrater();
+    //开启与关闭寒冰菇无限冻结
+    void EnableInfinityFreeze();
+    void DisableInfinityFreeze();
     
 };
 

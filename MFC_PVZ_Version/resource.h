@@ -27,8 +27,10 @@
 #define IDC_CHANGEZOMBIE                1020
 #define IDC_CHANGEPEA                   1021
 #define IDC_EDIT9                       1022
-#define IDC_                            1024
 #define IDC_CHANGENUT                   1024
+#define IDC_NOCRATER                    1025
+#define IDC_CHECK2                      1026
+#define IDC_INFINITYFREEZE              1026
 
 // Next default values for new objects
 // 
@@ -36,7 +38,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1025
+#define _APS_NEXT_CONTROL_VALUE         1027
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif

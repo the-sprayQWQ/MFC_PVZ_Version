@@ -44,8 +44,9 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON6, &Plants::RestorePlantColor)
 	ON_BN_CLICKED(IDC_CHANGEZOMBIE, &Plants::ChangeZombie)
 	ON_BN_CLICKED(IDC_CHANGEPEA, &Plants::ChangePea)
-
 	ON_BN_CLICKED(IDC_CHANGENUT, &Plants::ChangeNut)
+	ON_BN_CLICKED(IDC_NOCRATER, &Plants::NoCrater)
+	ON_BN_CLICKED(IDC_INFINITYFREEZE, &Plants::InfinityFreeze)
 END_MESSAGE_MAP()
 
 
@@ -284,5 +285,33 @@ void Plants::ChangeNut()
 	else {
 		pvzManager pvzManager;
 		pvzManager.DisableChangeNut();
+	}
+}
+
+void Plants::NoCrater()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_NOCRATER))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableNoCrater();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableNoCrater();
+	}
+}
+
+void Plants::InfinityFreeze()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_INFINITYFREEZE))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableInfinityFreeze();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableInfinityFreeze();
 	}
 }

@@ -38,4 +38,6 @@ public:
 	afx_msg void ChangeZombie();
 	afx_msg void ChangePea();
 	afx_msg void ChangeNut();
+	afx_msg void NoCrater();
+	afx_msg void InfinityFreeze();
 };

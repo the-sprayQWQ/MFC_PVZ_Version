@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <vector>
 
 class memory
 {
@@ -26,5 +27,7 @@ public:
 	}
 
 	void WriteByte(uintptr_t address,BYTE value);
+	void WriteBytes(uintptr_t address, const BYTE* data, size_t size);
+	void WriteBytes(uintptr_t address, const std::vector<BYTE>& bytes);
 };
 
