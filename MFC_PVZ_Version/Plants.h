@@ -47,4 +47,6 @@ public:
 	afx_msg void ChangePlant();
 	afx_msg void MushroomAwakening();
 	afx_msg void ChangeButter();
+	afx_msg void ChangeLevel();
+	afx_msg void PlantingZombies();
 };

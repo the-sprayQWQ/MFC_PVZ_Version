@@ -168,6 +168,36 @@ void pvzManager::SetPlant(int column, int row, int pType)
 	}
 }
 
+void pvzManager::SetZombies(int column, int row, int zType)
+{
+	if (VersionResult == 0) {
+		__asm {
+			pushad
+			push column
+			push zType
+			mov eax, row
+			mov ebx, dword ptr ds : [0x006A9EC0]
+			mov ebx, dword ptr ds : [ebx + 0x768]
+			mov ebx, dword ptr ds : [ebx + 0x160]
+			mov ecx, ebx
+			mov esi,0x0042A0F0
+			call esi
+			popad
+		}
+	}
+}
+
+void pvzManager::ChangeLevel(int Level)
+{
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
+		uintptr_t LevelOffset = Read<uintptr_t>((ChineseVersionGameBaseAddress + 0x82C));
+		Write<int>((LevelOffset + 0x24),Level);
+
+	}
+}
+
 int pvzManager::s_Red = 255;
 int pvzManager::s_Green = 255;
 int pvzManager::s_Blue = 64;

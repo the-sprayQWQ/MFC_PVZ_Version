@@ -38,8 +38,13 @@
 #define IDC_EDIT10                      1032
 #define IDC_EDIT11                      1033
 #define IDC_MUSHROOMAWAKENING           1034
-#define IDC_CHECK1                      1035
 #define IDC_CHANGEBUTTER                1035
+#define IDC_EDIT12                      1036
+#define IDC_BUTTON7                     1037
+#define IDC_PLANTINGZOMBIES             1038
+#define IDC_EDIT13                      1039
+#define IDC_EDIT14                      1040
+#define IDC_EDIT15                      1041
 
 // Next default values for new objects
 // 
@@ -47,7 +52,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif

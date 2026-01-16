@@ -45,6 +45,10 @@ public:
     void GetProps(int pType);
     //种植物
     void SetPlant(int column,int row,int pType);
+    //种僵尸
+    void SetZombies(int column,int row,int zType);
+    //修改关卡
+    void ChangeLevel(int Level);
     //修改植物颜色HOOK
     void ChangePlantColor(int Red,int Green,int Blue);
     void restorePlantColor();

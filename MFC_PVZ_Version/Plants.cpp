@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_CHANGEPLANTS, &Plants::ChangePlant)
 	ON_BN_CLICKED(IDC_MUSHROOMAWAKENING, &Plants::MushroomAwakening)
 	ON_BN_CLICKED(IDC_CHANGEBUTTER, &Plants::ChangeButter)
+	ON_BN_CLICKED(IDC_BUTTON7, &Plants::ChangeLevel)
+	ON_BN_CLICKED(IDC_PLANTINGZOMBIES, &Plants::PlantingZombies)
 END_MESSAGE_MAP()
 
 
@@ -98,6 +100,14 @@ BOOL Plants::OnInitDialog()
 	::SendMessage(GetDlgItem(IDC_EDIT10)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"格子位置（1-x）");
 
 	::SendMessage(GetDlgItem(IDC_EDIT11)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物ID");
+
+	::SendMessage(GetDlgItem(IDC_EDIT12)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"关卡数");
+
+	::SendMessage(GetDlgItem(IDC_EDIT13)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸列");
+
+	::SendMessage(GetDlgItem(IDC_EDIT14)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸行");
+
+	::SendMessage(GetDlgItem(IDC_EDIT15)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸种类");
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -419,4 +429,22 @@ void Plants::ChangeButter()
 		pvzManager pvzManager;
 		pvzManager.DisableChangeButter();
 	}
+}
+
+void Plants::ChangeLevel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int Level = GetDlgItemInt(IDC_EDIT12, NULL, FALSE);
+	pvzManager pvzManager;
+	pvzManager.ChangeLevel(Level);
+}
+
+void Plants::PlantingZombies()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int column = GetDlgItemInt(IDC_EDIT13, NULL, FALSE);
+	int row = GetDlgItemInt(IDC_EDIT14, NULL, FALSE);
+	int zType = GetDlgItemInt(IDC_EDIT15, NULL, FALSE);
+	pvzManager pvzManager;
+	pvzManager.SetZombies(column, row, zType);
 }
