@@ -37,6 +37,8 @@ public:
 
     //设置阳光
     void SetSunlight(int value);
+    //变更植物
+    void ChangePlant(int plaidPos,int plantType);
     //哪行召唤什么僵尸
     void AddZombies(int row, int zType);
     //刷道具
@@ -85,6 +87,17 @@ public:
     //开启与关闭土豆雷出土时间
     void EnableMineeTime();
     void DisableMineeTime();
-    
+    //开启与关闭樱桃炸弹瞬间爆炸
+    void EnableInstantExplosion();
+    void DisableInstantExplosion();
+    //开启与关闭灰烬植物全屏秒杀
+    void EnableAshPlant();
+    void DisableAshPlant();
+    //开启与关闭蘑菇免唤醒
+    void EnableMushroomAwakening();
+    void DisableMushroomAwakening();
+    //开启与关闭玉米投手只投黄油
+    void EnableChangeButter();
+    void DisableChangeButter();
 };
 

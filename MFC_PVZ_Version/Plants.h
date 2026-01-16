@@ -42,4 +42,9 @@ public:
 	afx_msg void InfinityFreeze();
 	afx_msg void FlowerAttck();
 	afx_msg void MineeTime();
+	afx_msg void InstantExplosion();
+	afx_msg void AshPlant();
+	afx_msg void ChangePlant();
+	afx_msg void MushroomAwakening();
+	afx_msg void ChangeButter();
 };

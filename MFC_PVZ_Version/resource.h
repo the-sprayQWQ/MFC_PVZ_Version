@@ -31,8 +31,15 @@
 #define IDC_NOCRATER                    1025
 #define IDC_INFINITYFREEZE              1026
 #define IDC_FLOWERATTCK                 1027
-#define IDC_MINE                        1028
 #define IDC_MINEETIME                   1028
+#define IDC_INSTANTEXPLOSION            1029
+#define IDC_ASHPLANT                    1030
+#define IDC_CHANGEPLANTS                1031
+#define IDC_EDIT10                      1032
+#define IDC_EDIT11                      1033
+#define IDC_MUSHROOMAWAKENING           1034
+#define IDC_CHECK1                      1035
+#define IDC_CHANGEBUTTER                1035
 
 // Next default values for new objects
 // 
@@ -40,7 +47,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1029
+#define _APS_NEXT_CONTROL_VALUE         1036
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif

@@ -49,6 +49,11 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_INFINITYFREEZE, &Plants::InfinityFreeze)
 	ON_BN_CLICKED(IDC_FLOWERATTCK, &Plants::FlowerAttck)
 	ON_BN_CLICKED(IDC_MINEETIME, &Plants::MineeTime)
+	ON_BN_CLICKED(IDC_INSTANTEXPLOSION, &Plants::InstantExplosion)
+	ON_BN_CLICKED(IDC_ASHPLANT, &Plants::AshPlant)
+	ON_BN_CLICKED(IDC_CHANGEPLANTS, &Plants::ChangePlant)
+	ON_BN_CLICKED(IDC_MUSHROOMAWAKENING, &Plants::MushroomAwakening)
+	ON_BN_CLICKED(IDC_CHANGEBUTTER, &Plants::ChangeButter)
 END_MESSAGE_MAP()
 
 
@@ -89,6 +94,10 @@ BOOL Plants::OnInitDialog()
 	::SendMessage(GetDlgItem(IDC_EDIT8)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"僵尸ID");
 
 	::SendMessage(GetDlgItem(IDC_EDIT9)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"道具ID");
+
+	::SendMessage(GetDlgItem(IDC_EDIT10)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"格子位置（1-x）");
+
+	::SendMessage(GetDlgItem(IDC_EDIT11)->GetSafeHwnd(), EM_SETCUEBANNER, TRUE, (LPARAM)L"植物ID");
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -343,5 +352,71 @@ void Plants::MineeTime()
 	else {
 		pvzManager pvzManager;
 		pvzManager.DisableMineeTime();
+	}
+}
+
+void Plants::InstantExplosion()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_INSTANTEXPLOSION))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableInstantExplosion();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableInstantExplosion();
+	}
+}
+
+void Plants::AshPlant()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ASHPLANT))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableAshPlant();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableAshPlant();
+	}
+}
+
+void Plants::ChangePlant()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int plaidPos = GetDlgItemInt(IDC_EDIT10, NULL, FALSE);
+	int plantType = GetDlgItemInt(IDC_EDIT11, NULL, FALSE);
+	pvzManager pvzManager;
+	pvzManager.ChangePlant(plaidPos, plantType);
+
+}
+
+void Plants::MushroomAwakening()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_MUSHROOMAWAKENING))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableMushroomAwakening();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableMushroomAwakening();
+	}
+}
+
+void Plants::ChangeButter()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_CHANGEBUTTER))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableChangeButter();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableChangeButter();
 	}
 }
