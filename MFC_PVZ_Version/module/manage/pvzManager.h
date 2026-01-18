@@ -3,6 +3,7 @@
 #include "../../Global.h"
 #include "../../minhook/include/MinHook.h"
 #include <stdio.h>
+#include <chrono>
 #ifdef _M_IX86
 #pragma comment(lib, "minhook/lib/libMinHook.x86.lib") // 32位游戏必选这个！
 #else
@@ -49,6 +50,12 @@ public:
     void SetZombies(int column,int row,int zType);
     //修改关卡
     void ChangeLevel(int Level);
+    //全屏魅惑
+    void AllEnchant();
+    //出怪间隔
+    void AllAttack();
+    //全屏扣血秒杀
+    void ReduceHealth();
     //修改植物颜色HOOK
     void ChangePlantColor(int Red,int Green,int Blue);
     void restorePlantColor();
@@ -103,5 +110,18 @@ public:
     //开启与关闭玉米投手只投黄油
     void EnableChangeButter();
     void DisableChangeButter();
+    //开启与关闭无限刷怪
+    void EnableInfinityZombies();
+    void DisableInfinityZombies();
+    //开启与关闭暂停出怪
+    void EnablePauseSpawn();
+    void DisablePauseSpawn();
+    //开启与关闭火爆辣椒瞬间燃烧
+    void EnableInstantBurn();
+    void DisableInstantBurn();
+    //开启与关闭火爆辣椒全屏秒杀
+    void EnableAllBurn();
+    void DisableAllBurn();
+
 };
 

@@ -49,4 +49,12 @@ public:
 	afx_msg void ChangeButter();
 	afx_msg void ChangeLevel();
 	afx_msg void PlantingZombies();
+	afx_msg void AllEnchant();
+	afx_msg void AllAttck();
+	afx_msg void InfinityZombie();
+	afx_msg void PauseSpawn();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void ReduceHealth();
+	afx_msg void InstantBurn();
+	afx_msg void AllBurn();
 };

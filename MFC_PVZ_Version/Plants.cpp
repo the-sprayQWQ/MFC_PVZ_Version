@@ -56,6 +56,15 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_CHANGEBUTTER, &Plants::ChangeButter)
 	ON_BN_CLICKED(IDC_BUTTON7, &Plants::ChangeLevel)
 	ON_BN_CLICKED(IDC_PLANTINGZOMBIES, &Plants::PlantingZombies)
+	ON_BN_CLICKED(IDC_BUTTON8, &Plants::AllEnchant)
+
+	ON_BN_CLICKED(IDC_ALLATTCK, &Plants::AllAttck)
+	ON_BN_CLICKED(IDC_INFINITYZOMBIE, &Plants::InfinityZombie)
+	ON_BN_CLICKED(IDC_PAUSESPAWN, &Plants::PauseSpawn)
+	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_REDUCEHEALTH, &Plants::ReduceHealth)
+	ON_BN_CLICKED(IDC_INSTANTBURN, &Plants::InstantBurn)
+	ON_BN_CLICKED(IDC_ALLBURN, &Plants::AllBurn)
 END_MESSAGE_MAP()
 
 
@@ -447,4 +456,98 @@ void Plants::PlantingZombies()
 	int zType = GetDlgItemInt(IDC_EDIT15, NULL, FALSE);
 	pvzManager pvzManager;
 	pvzManager.SetZombies(column, row, zType);
+}
+
+
+void Plants::AllEnchant()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.AllEnchant();
+}
+
+void Plants::AllAttck()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLATTCK))->GetCheck();
+	if (state == 1) {
+		SetTimer(1, 1, NULL);
+	}
+	else {
+		KillTimer(1);
+		
+	}
+}
+
+void Plants::InfinityZombie()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_INFINITYZOMBIE))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableInfinityZombies();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableInfinityZombies();
+	}
+}
+
+void Plants::PauseSpawn()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_PAUSESPAWN))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnablePauseSpawn();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisablePauseSpawn();
+	}
+}
+
+void Plants::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	pvzManager pvzManager;
+	if (nIDEvent == 1) {
+		
+		pvzManager.AllAttack();
+	}
+	CDialogEx::OnTimer(nIDEvent);
+}
+
+void Plants::ReduceHealth()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.ReduceHealth();
+}
+
+void Plants::InstantBurn()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_INSTANTBURN))->GetCheck();
+	if(state == 1){
+		pvzManager pvzManager;
+		pvzManager.EnableInstantBurn();
+	}else{
+		pvzManager pvzManager;
+		pvzManager.DisableInstantBurn();
+	}
+}
+
+void Plants::AllBurn()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLBURN))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.EnableAllBurn();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.DisableAllBurn();
+	}
 }
