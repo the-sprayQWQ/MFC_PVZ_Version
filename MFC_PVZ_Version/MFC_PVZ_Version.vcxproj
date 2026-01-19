@@ -185,6 +185,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameOffset\GameOffset.cpp" />
     <ClCompile Include="module\readwrite\memory.cpp" />
     <ClCompile Include="MFC_PVZ_Version.cpp" />
     <ClCompile Include="pch.cpp">
@@ -202,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameOffset\GameOffset.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="minhook\include\MinHook.h" />
     <ClInclude Include="module\readwrite\memory.h" />

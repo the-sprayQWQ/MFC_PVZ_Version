@@ -1,262 +1,113 @@
 #include "pvzManager.h"
 
-void pvzManager::SetSunlight(int value)
+pvzManager::pvzManager()
 {
+	m_GameBase = 0;
 	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x2A9EC0);
-		uintptr_t GameSunLightOffset = Read<uintptr_t>(ChineseVersionGameBaseAddress + 0x768);
-		Write<int>((GameSunLightOffset + 0x5560), value);
+		m_Offsets = GameOffset::GetChineseVersion();
+		m_ModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		m_GameBase = memory::Read<uintptr_t>(m_ModuleAddress + m_Offsets.BasePtrOffset);
+
 	}
 	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameSunLightOffset = Read<uintptr_t>(SteamVersionGameBaseAddress + 0x868);
-		Write<int>((GameSunLightOffset + 0x5578), value);
+		m_Offsets = GameOffset::GetSteamVersion();
+		m_ModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
+		m_GameBase = memory::Read<uintptr_t>(m_ModuleAddress + m_Offsets.BasePtrOffset);
 	}
 	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t GameSunLightOffset = Read<uintptr_t>((SeasonVersionGameBaseAddress + 0x868));
-		Write<int>((GameSunLightOffset + 0x5578), value);
+		m_Offsets = GameOffset::GetSteamVersion();
+		m_ModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		m_GameBase = memory::Read<uintptr_t>(m_ModuleAddress + m_Offsets.BasePtrOffset);
 	}
+}
+
+void pvzManager::SetSunlight(int value)
+{
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	Write<int>((boardAddress + m_Offsets.SunOffset), value);
 }
 
 void pvzManager::ChangePlant(int plaidPos, int plantType)
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x2A9EC0);
-		uintptr_t GameMainOffset = Read<uintptr_t>(ChineseVersionGameBaseAddress + 0x768);
-		uintptr_t plaidFirstOffset = Read<uintptr_t>(GameMainOffset + 0x144);
-		Write<int>((plaidFirstOffset + 0x5C + (plaidPos - 1) * 0x50), plantType);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameMainOffset = Read<uintptr_t>(SteamVersionGameBaseAddress + 0x868);
-		uintptr_t plaidFirstOffset = Read<uintptr_t>(GameMainOffset + 0x15C);
-		Write<int>((plaidFirstOffset + 0x5C + (plaidPos - 1) * 0x50), plantType);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameMainOffset = Read<uintptr_t>(SeasonVersionGameBaseAddress + 0x868);
-		uintptr_t plaidFirstOffset = Read<uintptr_t>(GameMainOffset + 0x15C);
-		Write<int>((plaidFirstOffset + 0x5C + (plaidPos - 1) * 0x70), plantType);
-	}
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	uintptr_t plaidFirstOffset = memory::Read<uintptr_t>(boardAddress + m_Offsets.plaidFirstOffset);
+	Write<int>((plaidFirstOffset + 0x5C + (plaidPos - 1) * 0x50), plantType);
 }
 
 void pvzManager::AddZombies(int row, int zType)
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
-		uintptr_t targetObj = Read<uintptr_t>((ChineseVersionGameBaseAddress + 0x768));
-		__asm {
-			pushad
-			push row
-			push zType
-			mov eax, targetObj
-			mov ebx, 0x0040DDC0
-			call ebx
-			popad
-		}
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	uintptr_t addZombies = m_ModuleAddress + m_Offsets.addZombiesOffset;
+	__asm {
+		pushad
+		push row
+		push zType
+		mov eax, boardAddress
+		mov ebx, addZombies
+		call ebx
+		popad
 	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t targetObj = Read<uintptr_t>((SteamVersionGameBaseAddress + 0x868));
-		__asm {
-			pushad
-			push row
-			push zType
-			mov eax, targetObj
-			mov ebx, 0x00411290
-			call ebx
-			popad
-		}
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t targetObj = Read<uintptr_t>((SeasonVersionGameBaseAddress + 0x868));
-		__asm {
-			pushad
-			push row
-			push zType
-			mov eax, targetObj
-			mov ebx, 0x00411290
-			call ebx
-			popad
-		}
-	}
-
 }
 
 void pvzManager::GetProps(int pType)
 {
-	if (VersionResult == 0) {
-		typedef void(__thiscall* GetProps)(void* thisPtr, int pos, int FixValue, int type, int zero);
-		GetProps getProps = (GetProps)0x0040CB10;
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
-		uintptr_t targetObj = Read<uintptr_t>((ChineseVersionGameBaseAddress + 0x768));
-		if (!pType) {
-			pType = 4;
-		}
-		getProps((void*)targetObj, 0, 0x3C, pType, 0);
+	typedef void(__thiscall* GetProps)(void* thisPtr, int pos, int FixValue, int type, int zero);
+	GetProps getProps = (GetProps)(m_ModuleAddress + m_Offsets.getPropsOffset);
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	if (!pType) {
+		pType = 4;
 	}
-	else if (VersionResult == 1) {
-		typedef void(__thiscall* GetProps)(void* thisPtr, int pos, int FixValue, int type, int zero);
-		GetProps getProps = (GetProps)0x0040FF90;
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t targetObj = Read<uintptr_t>((SteamVersionGameBaseAddress + 0x868));
-		if (!pType) {
-			pType = 4;
-		}
-		getProps((void*)targetObj, 0, 0x3C, pType, 0);
-	}
-	else {
-		typedef void(__thiscall* GetProps)(void* thisPtr, int pos, int FixValue, int type, int zero);
-		GetProps getProps = (GetProps)0x0040FF90;
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t targetObj = Read<uintptr_t>((SeasonVersionGameBaseAddress + 0x868));
-		if (!pType) {
-			pType = 4;
-		}
-		getProps((void*)targetObj, 0, 0x3C, pType, 0);
-	}
-
-
+	getProps((void*)boardAddress, 0, 0x3C, pType, 0);
 }
 
 void pvzManager::SetPlant(int column, int row, int pType)
 {
-	if (VersionResult == 0) {
-		__asm {
-			pushad
-			push 0xFFFFFFFF
-			push pType
-			mov eax, row
-			push column
-			mov edi, dword ptr ds : [0x006A9EC0]
-			mov edi, dword ptr ds : [edi + 0x768]
-			push edi
-			mov ebx, 0x0040D120
-			call ebx
-			popad
-		}
-	}
-	else if (VersionResult == 1) {
-		__asm {
-			pushad
-			push 0xFFFFFFFF
-			push pType
-			mov eax, row
-			push column
-			mov edi, dword ptr ds : [0x00731C50]
-			mov edi, dword ptr ds : [edi + 0x868]
-			push edi
-			mov ebx, 0x004105A0
-			call ebx
-			popad
-		}
-	}
-	else {
-		__asm {
-			pushad
-			push 0xFFFFFFFF
-			push pType
-			mov eax, row
-			push column
-			mov edi, dword ptr ds : [0x00731C50]
-			mov edi, dword ptr ds : [edi + 0x868]
-			push edi
-			mov ebx, 0x004105A0
-			call ebx
-			popad
-		}
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	uintptr_t setPlant = m_ModuleAddress + m_Offsets.setPlantOffset;
+	__asm {
+		pushad
+		push 0xFFFFFFFF
+		push pType
+		mov eax, row
+		push column
+		push boardAddress
+		mov ebx, setPlant
+		call ebx
+		popad
 	}
 }
 
 void pvzManager::SetZombies(int column, int row, int zType)
 {
-	if (VersionResult == 0) {
-		__asm {
-			pushad
-			push column
-			push zType
-			mov eax, row
-			mov ebx, dword ptr ds : [0x006A9EC0]
-			mov ebx, dword ptr ds : [ebx + 0x768]
-			mov ebx, dword ptr ds : [ebx + 0x160]
-			mov ecx, ebx
-			mov esi, 0x0042A0F0
-			call esi
-			popad
-		}
-	}
-	else if (VersionResult == 1) {
-		__asm {
-			pushad
-			push column
-			push zType
-			mov eax, row
-			mov ebx, dword ptr ds : [0x00731C50]
-			mov ebx, dword ptr ds : [ebx + 0x868]
-			mov ebx, dword ptr ds : [ebx + 0x178]
-			mov ecx, ebx
-			mov esi, 0x0042DCE0
-			call esi
-			popad
-		}
-	}
-	else {
-		__asm {
-			pushad
-			push column
-			push zType
-			mov eax, row
-			mov ebx, dword ptr ds : [0x00731C50]
-			mov ebx, dword ptr ds : [ebx + 0x868]
-			mov ebx, dword ptr ds : [ebx + 0x178]
-			mov ecx, ebx
-			mov esi, 0x0042DCE0
-			call esi
-			popad
-		}
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	uintptr_t mineZombiePtr = memory::Read<uintptr_t>(boardAddress + m_Offsets.mineZombieOffset);
+	uintptr_t setZombies = m_ModuleAddress + m_Offsets.setZombieOffset;
+	__asm {
+		pushad
+		push column
+		push zType
+		mov eax, row
+		mov ecx, mineZombiePtr
+		mov esi, setZombies
+		call esi
+		popad
 	}
 }
 
 void pvzManager::ChangeLevel(int Level)
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
-		uintptr_t LevelOffset = Read<uintptr_t>((ChineseVersionGameBaseAddress + 0x82C));
-		Write<int>((LevelOffset + 0x24), Level);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t LevelOffset = Read<uintptr_t>((SteamVersionGameBaseAddress + 0x94C));
-		Write<int>((LevelOffset + 0x50), Level);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x331C50));
-		uintptr_t LevelOffset = Read<uintptr_t>((SeasonVersionGameBaseAddress + 0x94C));
-		Write<int>((LevelOffset + 0x50), Level);
-	}
+	uintptr_t levelAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.levelFirstOffset);
+	Write<int>((levelAddress + m_Offsets.levelFinalOffset), Level);
 }
 
 void pvzManager::AllEnchant()
 {
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+
 	if (VersionResult == 0) {
-		return;
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
+		uintptr_t GameBoardAddress = Read<uintptr_t>(ChineseVersionGameBaseAddress + 0x768);
 	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
@@ -282,28 +133,10 @@ void pvzManager::AllEnchant()
 
 void pvzManager::AllAttack()
 {
-	if (VersionResult == 0) {
-		return;
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameBoardAddress = Read<uintptr_t>(SteamVersionGameBaseAddress + 0x868);
-		uintptr_t CurrentZombiesNum = Read<int>(GameModuleAddress + 0x32F948);
-
-		if (CurrentZombiesNum < 900) {
-			Write<int>((GameBoardAddress +0x55B4),1);
-		}
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t SeasonVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameBoardAddress = Read<uintptr_t>(SeasonVersionGameBaseAddress + 0x868);
-		uintptr_t CurrentZombiesNum = Read<int>(GameModuleAddress + 0x32F948);
-
-		if (CurrentZombiesNum < 900) {
-			Write<int>((GameBoardAddress + 0x55B4), 1);
-		}
+	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	int currentZombiesNum = memory::Read<int>(boardAddress + m_Offsets.currentZombiesNumOffset);
+	if (currentZombiesNum < 900) {
+		Write<int>((boardAddress + m_Offsets.allAttackOffset), 1);
 	}
 }
 
@@ -421,164 +254,52 @@ void pvzManager::restorePlantColor()
 
 void pvzManager::EnableNoCooldown()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x88E76), 0x01);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x97516), 0x01);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x97516), 0x01);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.coolDownOffset), 0x01);
 }
 
 void pvzManager::DisableNoCooldown()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x88E76), 0x00);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x97516), 0x00);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x97516), 0x00);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.coolDownOffset), 0x01);
 }
 
 void pvzManager::EnableAutoCollect()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x3158E), 0x01);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x352F1), 0x01);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x352F1), 0x01);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.autoCollectOffset), 0x01);
 }
 
 void pvzManager::DisableAutoCollect()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x3158E), 0x00);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x352F1), 0x00);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x352F1), 0x00);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.autoCollectOffset), 0x00);
 }
 
 void pvzManager::EnablePeaDamage()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x6EB2E), 0x00);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x76B7B), 0x00);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x76B7B), 0x00);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.peaDamageOffset), 0x00);
 }
 
 void pvzManager::DisablePeaDamage()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x6EB2E), 0x01);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x76B7B), 0x01);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x76B7B), 0x01);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.peaDamageOffset), 0x01);
 }
 
 void pvzManager::EnableNoPause()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x14EB87), 0xEB);
-		WriteByte((GameModuleAddress + 0x14EB88), 0x09);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x540D9), 0x01);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x540D9), 0x01);
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.noPauseOffset), m_Offsets.noPauseData);
 }
 
 void pvzManager::DisableNoPause()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x14EB87), 0x74);
-		WriteByte((GameModuleAddress + 0x14EB88), 0x0D);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x540D9), 0x00);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x540D9), 0x00);
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.noPauseOffset), m_Offsets.restorePauseData);
 }
 
 void pvzManager::EnablePlantSpeed()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x64A97), 0x84);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x6AEC5), 0x84);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x6AEC5), 0x84);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.plantSpeedOffset), 0x84);
 }
 
 void pvzManager::DisablePlantSpeed()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x64A97), 0x85);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x6AEC5), 0x85);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x6AEC5), 0x85);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.plantSpeedOffset), 0x84);
 }
 
 void pvzManager::EnableFlowerEat()
@@ -621,108 +342,45 @@ void pvzManager::DisableFlowerEat()
 
 int pvzManager::s_row = 0;
 int pvzManager::s_zType = 0;
+uintptr_t pvzManager::s_boardAddress = 0;
+uintptr_t pvzManager::s_changeZombieCall = 0;
 uintptr_t pvzManager::s_ChangeZombieRetAddress = 0;
 
-void _declspec(naked) ChineseVersionChangeZombie() {
+void _declspec(naked) ChangeZombie() {
 	__asm {
 		pushad
 		push[pvzManager::s_row]
 		push[pvzManager::s_zType]
-		mov eax, dword ptr ds : [0x006A9EC0]
-		mov eax, dword ptr ds : [eax + 0x768]
-		mov eax, eax
-		mov ebx, 0x0040DDC0
+		mov eax, [pvzManager::s_boardAddress]
+		mov ebx, [pvzManager::s_changeZombieCall]
 		call ebx
 		popad
 		jmp[pvzManager::s_ChangeZombieRetAddress]
 	}
 }
-void _declspec(naked) SteamVersionChangeZombie() {
-	__asm {
-		pushad
-		push[pvzManager::s_row]
-		push[pvzManager::s_zType]
-		mov eax, dword ptr ds : [0x00731C50]
-		mov eax, dword ptr ds : [eax + 0x868]
-		mov eax, eax
-		mov ebx, 0x00411290
-		call ebx
-		popad
-		jmp[pvzManager::s_ChangeZombieRetAddress]
-	}
-}
-void _declspec(naked) SeasonVersionChangeZombie() {
-	__asm {
-		pushad
-		push[pvzManager::s_row]
-		push[pvzManager::s_zType]
-		mov eax, dword ptr ds : [0x00731C50]
-		mov eax, dword ptr ds : [eax + 0x868]
-		mov eax, eax
-		mov ebx, 0x00411290
-		call ebx
-		popad
-		jmp[pvzManager::s_ChangeZombieRetAddress]
-	}
-}
-
 void pvzManager::EnableChangeZombie(int row, int zType)
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		s_row = row;
-		s_zType = zType;
-		uintptr_t TargetAddress = GameModuleAddress + 0x13055;
-		s_ChangeZombieRetAddress = TargetAddress + 9;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangeZombie, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		s_row = row;
-		s_zType = zType;
-		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
-		s_ChangeZombieRetAddress = TargetAddress + 9;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangeZombie, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		s_row = row;
-		s_zType = zType;
-		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
-		s_ChangeZombieRetAddress = TargetAddress + 9;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SeasonVersionChangeZombie, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-
+	s_row = row;
+	s_zType = zType;
+	s_boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changeZombiesOffset;
+	s_changeZombieCall = m_ModuleAddress + m_Offsets.changeZombiesCallOffset;
+	s_ChangeZombieRetAddress = TargetAddress + 9;
+	MH_Initialize();
+	MH_CreateHook((LPVOID)TargetAddress, &ChangeZombie, NULL);
+	MH_EnableHook((LPVOID)TargetAddress);
 }
 
 void pvzManager::DisableChangeZombie()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x13055;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x16568;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changeZombiesOffset;
+	MH_DisableHook((LPVOID)TargetAddress);
 }
 
 int pvzManager::s_pType = 0;
 uintptr_t pvzManager::s_ChangePeaRetAddress = 0;
-void _declspec(naked) ChineseVersionChangePea() {
+uintptr_t pvzManager::s_ChangePeaCall = 0;
+void _declspec(naked) ChangePea() {
 	__asm {
 		pushad
 		call rand
@@ -738,131 +396,32 @@ void _declspec(naked) ChineseVersionChangePea() {
 		push ecx
 		push esi
 		push edi
-		mov ebx, 0x0040D620
+		mov ebx, [pvzManager::s_ChangePeaCall]
 		call ebx
 		mov[eax + 0x74], 01
 		jmp[pvzManager::s_ChangePeaRetAddress]
 	}
 }
-void _declspec(naked) SteamVersionChangePea() {
-	__asm {
-		pushad
-		call rand
-		mov ecx, 13
-		xor edx, edx
-		div ecx
-		mov pvzManager::s_pType, edx
-		popad
-		push[pvzManager::s_pType]
-		mov eax, [ebp + 4]
-		push ebx
-		sub ecx, 01
-		push ecx
-		push esi
-		push edi
-		mov ebx, 0x00410BA0
-		call ebx
-		mov[eax + 0x74], 01
-		jmp[pvzManager::s_ChangePeaRetAddress]
-	}
-}
-void _declspec(naked) SeasonVersionChangePea() {
-	__asm {
-		pushad
-		call rand
-		mov ecx, 13
-		xor edx, edx
-		div ecx
-		mov pvzManager::s_pType, edx
-		popad
-		push[pvzManager::s_pType]
-		mov eax, [ebp + 4]
-		push ebx
-		sub ecx, 01
-		push ecx
-		push esi
-		push edi
-		mov ebx, 0x00410BA0
-		call ebx
-		mov[eax + 0x74], 01
-		jmp[pvzManager::s_ChangePeaRetAddress]
-	}
-}
-
 void pvzManager::EnableChangePea(int pType)
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x672A5;
-		s_ChangePeaRetAddress = TargetAddress + 0x10;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangePea, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
-		s_ChangePeaRetAddress = TargetAddress + 0x10;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangePea, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
-		s_ChangePeaRetAddress = TargetAddress + 0x10;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SeasonVersionChangePea, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
+
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changePeaOffset;
+	s_ChangePeaCall = m_ModuleAddress + m_Offsets.changePeaCallOffset;
+	s_ChangePeaRetAddress = TargetAddress + 0x10;
+	MH_Initialize();
+	MH_CreateHook((LPVOID)TargetAddress, &ChangePea, NULL);
+	MH_EnableHook((LPVOID)TargetAddress);
 
 }
 
 void pvzManager::DisableChangePea()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x672A5;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x6D745;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changePeaOffset;
+	MH_DisableHook((LPVOID)TargetAddress);
 }
 
 uintptr_t pvzManager::s_ChangeNutRetAddress = 0;
-void _declspec(naked) ChineseVersionChangeNut() {
-	__asm {
-		cmp dword ptr[esi + 0x40], 0x32
-		jg originalCode
-		mov[esi + 0x24], 0x11
-		originalCode:
-		add dword ptr[esi + 0x40], -04
-			mov ecx, [esi + 0x40]
-			jmp[pvzManager::s_ChangeNutRetAddress]
-	}
-}
-
-void _declspec(naked) SteamVersionChangeNut() {
-	__asm {
-		cmp dword ptr[esi + 0x40], 0x32
-		jg originalCode
-		mov[esi + 0x24], 0x11
-		originalCode:
-		add dword ptr[esi + 0x40], -04
-			mov ecx, [esi + 0x40]
-			jmp[pvzManager::s_ChangeNutRetAddress]
-	}
-}
-
-void _declspec(naked) SeasonVersionChangeNut() {
+void _declspec(naked) ChangeNut() {
 	__asm {
 		cmp dword ptr[esi + 0x40], 0x32
 		jg originalCode
@@ -876,372 +435,120 @@ void _declspec(naked) SeasonVersionChangeNut() {
 
 void pvzManager::EnableChangeNut()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x12FCF0;
-		s_ChangeNutRetAddress = TargetAddress + 7;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &ChineseVersionChangeNut, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
-		s_ChangeNutRetAddress = TargetAddress + 7;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SteamVersionChangeNut, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
-		s_ChangeNutRetAddress = TargetAddress + 7;
-		MH_Initialize();
-		MH_CreateHook((LPVOID)TargetAddress, &SeasonVersionChangeNut, NULL);
-		MH_EnableHook((LPVOID)TargetAddress);
-	}
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changeNutOffset;
+	MH_Initialize();
+	MH_CreateHook((LPVOID)TargetAddress, &ChangeNut, NULL);
+	MH_EnableHook((LPVOID)TargetAddress);
 }
 
 void pvzManager::DisableChangeNut()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x12FCF0;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t TargetAddress = GameModuleAddress + 0x1447A0;
-		MH_DisableHook((LPVOID)TargetAddress);
-	}
+	uintptr_t TargetAddress = m_ModuleAddress + m_Offsets.changeNutOffset;
+	MH_DisableHook((LPVOID)TargetAddress);
 }
 
 void pvzManager::EnableNoCrater()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x1D796), { 0xC7,0x46,0x18,0x00,0x00,0x00,0x00,0x90 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x2136D), 0x74);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x2136D), 0x74);
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.noCraterOffset), m_Offsets.noCraterData);
 }
 
 void pvzManager::DisableNoCrater()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x1D796), { 0x83,0x46,0x18,0xFF,0x83,0x7E,0x18,0x00 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x2136D), 0x75);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x2136D), 0x75);
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.noCraterOffset), m_Offsets.restoreCraterData);
 }
 
 void pvzManager::EnableInfinityFreeze()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x12B421), 0x01);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x13FE08), 0x01);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x13FE08), 0x01);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.infinityFreezeOffset), 0x01);
 }
 
 void pvzManager::DisableInfinityFreeze()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x12B421), 0xFF);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x13FE08), 0xFF);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x13FE08), 0xFF);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.infinityFreezeOffset), 0xFF);
 }
 
 void pvzManager::EnableFlowerAttck()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x676C2), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x677DA), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6DB62), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x6DC7A), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6DB62), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x6DC7A), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
-
+	WriteBytes((m_ModuleAddress + m_Offsets.flowerAttackOffset1), { 0x90,0x90,0x90,0x90,0x90,0x90 });
+	WriteBytes((m_ModuleAddress + m_Offsets.flowerAttackOffset2), { 0x90,0x90,0x90,0x90,0x90,0x90 });
 }
 
 void pvzManager::DisableFlowerAttck()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x676C2), { 0x0F,0x85,0xBC,0x01,0x00,0x00 });
-		WriteBytes((GameModuleAddress + 0x677DA), { 0x0F,0x8C,0xA1,0x00,0x00,0x00 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6DB62), { 0x0F,0x85,0xBC,0x01,0x00,0x00 });
-		WriteBytes((GameModuleAddress + 0x6DC7A), { 0x0F,0x8C,0xA1,0x00,0x00,0x00 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6DB62), { 0x0F,0x85,0xBC,0x01,0x00,0x00 });
-		WriteBytes((GameModuleAddress + 0x6DC7A), { 0x0F,0x8C,0xA1,0x00,0x00,0x00 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.flowerAttackOffset1), { 0x0F,0x85,0xBC,0x01,0x00,0x00 });
+	WriteBytes((m_ModuleAddress + m_Offsets.flowerAttackOffset2), { 0x0F,0x8C,0xA1,0x00,0x00,0x00 });
 }
 
 void pvzManager::EnableMineeTime()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x5FE54), 0x84);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69646), { 0x31,0xC0,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69646), { 0x31,0xC0,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.mineeTimeOffset), m_Offsets.mineeTimeData);
 }
 
 void pvzManager::DisableMineeTime()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x5FE54), 0x85);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69646), { 0x7E,0x04,0x48 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69646), { 0x7E,0x04,0x48 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.mineeTimeOffset), m_Offsets.restoremineeTimeData);
 }
 
 void pvzManager::EnableInstantExplosion()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x63408), { 0x90,0x90 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.instantExplosionOffset), { 0x90,0x90 });
 }
 
 void pvzManager::DisableInstantExplosion()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x63408), { 0x75,0x06 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x75,0x06 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x75,0x06 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.instantExplosionOffset), { 0x75,0x06 });
 }
 
 void pvzManager::EnableAshPlant()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x1D905), { 0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x1D91F), { 0x90,0x90 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x214C3), { 0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x214E3), { 0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x214C3), { 0x90,0x90 });
-		WriteBytes((GameModuleAddress + 0x214E3), { 0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.ashPlantOffset1), { 0x90,0x90 });
+	WriteBytes((m_ModuleAddress + m_Offsets.ashPlantOffset2), { 0x90,0x90 });
 }
 
 void pvzManager::DisableAshPlant()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x1D905), { 0x7C,0x38 });
-		WriteBytes((GameModuleAddress + 0x1D91F), { 0x74,0x1E });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x214C3), { 0x7F,0x5D });
-		WriteBytes((GameModuleAddress + 0x214E3), { 0x74,0x3D });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x214C3), { 0x7F,0x5D });
-		WriteBytes((GameModuleAddress + 0x214E3), { 0x74,0x3D });
-	}
-
+	WriteBytes((m_ModuleAddress + m_Offsets.ashPlantOffset1), m_Offsets.restoreAshPlantData1);
+	WriteBytes((m_ModuleAddress + m_Offsets.ashPlantOffset2), m_Offsets.restoreAshPlantData2);
 }
 
 void pvzManager::EnableMushroomAwakening()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x5DE83), 0xEB);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x64197), 0xEB);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x64197), 0xEB);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.mushroomAwakingOffset), 0xEB);
 }
 
 void pvzManager::DisableMushroomAwakening()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x5DE83), 0x74);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteByte((GameModuleAddress + 0x64197), 0x74);
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteByte((GameModuleAddress + 0x64197), 0x74);
-	}
+	WriteByte((m_ModuleAddress + m_Offsets.mushroomAwakingOffset), 0x74);
 }
 
 void pvzManager::EnableChangeButter()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x64BD6), { 0x90,0x90 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6B002), { 0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6B002), { 0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.changeButterOffset), { 0x90,0x90 });
 }
 
 void pvzManager::DisableChangeButter()
 {
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x64BD6), { 0x75,0x44 });
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6B002), { 0x75,0x44 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6B002), { 0x75,0x44 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.changeButterOffset), { 0x75,0x44 });
 }
-
 
 void pvzManager::EnableInfinityZombies()
 {
-	if (VersionResult == 0) { return; }
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x165CA), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x165CA), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.infinityZombieOffset), m_Offsets.infinityZombieData);
 }
 
 void pvzManager::DisableInfinityZombies()
 {
-	if (VersionResult == 0) { return; }
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x165CA), { 0x89,0xB7,0x94,0x55,0x00,0x00 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x165CA), { 0x89,0xB7,0x94,0x55,0x00,0x00 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.infinityZombieOffset), m_Offsets.restoreZombieData);
 }
 
 void pvzManager::EnablePauseSpawn()
 {
-	if (VersionResult == 0) { return; }
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x17335), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x17335), { 0x90,0x90,0x90,0x90,0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.pauseSpawnOffset), { 0x90,0x90,0x90,0x90,0x90,0x90,0x90 });
 }
 
 void pvzManager::DisablePauseSpawn()
 {
-	if (VersionResult == 0) { return; }
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x17335), { 0xFF,0x8F,0xB4,0x55,0x00,0x00 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x17335), { 0xFF,0x8F,0xB4,0x55,0x00,0x00 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.pauseSpawnOffset), m_Offsets.restoreSpawnData);
 }
 
 void pvzManager::EnableInstantBurn()

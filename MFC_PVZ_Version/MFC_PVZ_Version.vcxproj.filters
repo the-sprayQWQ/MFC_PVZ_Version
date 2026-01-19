@@ -22,6 +22,9 @@
     <Filter Include="minhook">
       <UniqueIdentifier>{3dc96f69-13ae-4da4-a39d-70886a855459}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameOffset">
+      <UniqueIdentifier>{c72d6990-3c3c-4478-95c1-ef498448ba02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_PVZ_Version.cpp">
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="module\manage\pvzManager.cpp">
       <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOffset\GameOffset.cpp">
+      <Filter>GameOffset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="minhook\include\MinHook.h">
       <Filter>minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOffset\GameOffset.h">
+      <Filter>GameOffset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

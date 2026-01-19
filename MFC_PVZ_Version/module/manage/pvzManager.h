@@ -2,6 +2,7 @@
 #include "../readwrite/memory.h"
 #include "../../Global.h"
 #include "../../minhook/include/MinHook.h"
+#include "../../GameOffset/GameOffset.h"
 #include <stdio.h>
 #include <chrono>
 #ifdef _M_IX86
@@ -14,7 +15,14 @@
 class pvzManager :
     public memory
 {
+private:
+    uintptr_t m_GameBase;
+    GameOffset m_Offsets;
+    uintptr_t m_ModuleAddress;
 public:
+    //构造函数
+    pvzManager();
+
     //静态成员RGB值
     static int s_Red;
     static int s_Green;
@@ -26,12 +34,15 @@ public:
     static int s_zType;
     static int s_row;
     //更改僵尸种类和出现位置返回地址
+    static uintptr_t s_boardAddress;
+    static uintptr_t s_changeZombieCall;
     static uintptr_t s_ChangeZombieRetAddress;
 
     //豌豆子弹类型
     static int s_pType;
     //修改豌豆类型返回地址
     static uintptr_t s_ChangePeaRetAddress;
+    static uintptr_t s_ChangePeaCall;
     //修改建国变窝瓜返回地址
     static uintptr_t s_ChangeNutRetAddress;
 
