@@ -41,6 +41,10 @@ struct GameOffset
 	uintptr_t pauseSpawnOffset;
 	uintptr_t allEnchantOffset;
 	uintptr_t zombieBaseOffset;
+	uintptr_t zombieNextOffset;
+	uintptr_t zombieMaxNumOffset;
+	uintptr_t instantBurnOffset;
+	uintptr_t allBurnOffset;
 	std::vector<unsigned char>restoreSpawnData;
 	std::vector<unsigned char>infinityZombieData;
 	std::vector<unsigned char>restoreZombieData;

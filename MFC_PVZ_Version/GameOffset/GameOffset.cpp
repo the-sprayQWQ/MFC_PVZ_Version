@@ -49,6 +49,11 @@ GameOffset GameOffset::GetSteamVersion()
 	data.pauseSpawnOffset = 0x17335;
 	data.restoreSpawnData = { 0xFF,0x8F,0xB4,0x55,0x00,0x00 };
 	data.allEnchantOffset = 0x1444E0;
+	data.zombieBaseOffset = 0xA8;
+	data.zombieNextOffset = 0x168;
+	data.zombieMaxNumOffset = 0xAC;
+	data.instantBurnOffset = 0x69802;
+	data.allBurnOffset = 0x6C942;
 	return data;
 }
 
@@ -101,6 +106,11 @@ GameOffset GameOffset::GetChineseVersion()
 	data.restoreZombieData = { 0x01 };
 	data.pauseSpawnOffset = 0x13E45;
 	data.restoreSpawnData = { 0x83,0x87,0x9C,0x55,0x00,0x00,0xFF };
-	data.allEnchantOffset = 0x679B0;
+	data.allEnchantOffset = 0x12FA60;
+	data.zombieBaseOffset = 0x90;
+	data.zombieNextOffset = 0x15C;
+	data.zombieMaxNumOffset = 0x98;
+	data.instantBurnOffset = 0x63408;
+	data.allBurnOffset = 0x664F2;
 	return data;
 }

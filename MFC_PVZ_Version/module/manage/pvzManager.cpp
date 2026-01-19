@@ -103,29 +103,19 @@ void pvzManager::ChangeLevel(int Level)
 void pvzManager::AllEnchant()
 {
 	uintptr_t boardAddress = memory::Read<uintptr_t>(m_GameBase + m_Offsets.BoardOffset);
-
-	if (VersionResult == 0) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>((GameModuleAddress + 0x2A9EC0));
-		uintptr_t GameBoardAddress = Read<uintptr_t>(ChineseVersionGameBaseAddress + 0x768);
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
-		uintptr_t GameMainAddress = Read<uintptr_t>(SteamVersionGameBaseAddress + 0x868);
-		uintptr_t ZombieBase = Read<uintptr_t>(GameMainAddress + 0xA8);
-		uintptr_t MaxZombiesNum = Read<uintptr_t>(GameMainAddress + 0xAC);
-		for (int i = 0; i < MaxZombiesNum; i++) {
-			uintptr_t ZombiesPtr = ZombieBase + (i * 0x168);
-			int hp = Read<int>(ZombiesPtr + 0xC8);
-			if (hp > 0) {
-				__asm {
-					pushad
-					mov esi, ZombiesPtr
-					mov eax, 0x005444E0
-					call eax
-					popad
-				}
+	uintptr_t ZombieBase = Read<uintptr_t>(boardAddress + m_Offsets.zombieBaseOffset);
+	uintptr_t MaxZombiesNum = Read<uintptr_t>(boardAddress + m_Offsets.zombieMaxNumOffset);
+	uintptr_t AllEnchant = m_ModuleAddress + m_Offsets.allEnchantOffset;
+	for (int i = 0; i < MaxZombiesNum; i++) {
+		uintptr_t ZombiesPtr = ZombieBase + (i * m_Offsets.zombieNextOffset);
+		int hp = Read<int>(ZombiesPtr + 0xC8);
+		if (hp > 0) {
+			__asm {
+				pushad
+				mov esi, ZombiesPtr
+				mov eax, AllEnchant
+				call eax
+				popad
 			}
 		}
 	}
@@ -142,7 +132,28 @@ void pvzManager::AllAttack()
 
 void pvzManager::ReduceHealth()
 {
-	if (VersionResult == 0) { return; }
+	if (VersionResult == 0) {
+		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
+		uintptr_t ChineseVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x002A9EC0);
+		uintptr_t GameMainAddress = Read<uintptr_t>(ChineseVersionGameBaseAddress + 0x768);
+		uintptr_t ZombieBase = Read<uintptr_t>(GameMainAddress + 0x90);
+		uintptr_t MaxZombiesNum = Read<uintptr_t>(GameMainAddress + 0x98);
+		for (int i = 0; i < MaxZombiesNum; i++) {
+			uintptr_t ZombiesPtr = ZombieBase + (i * 0x15C);
+			int hp = Read<int>(ZombiesPtr + 0xC8);
+			if (hp > 0) {
+				__asm {
+					pushad
+					push 0
+					push 0x2710
+					push ZombiesPtr
+					mov eax, 0x005312D0
+					call eax
+					popad
+				}
+			}
+		}
+	}
 	else if (VersionResult == 1) {
 		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
 		uintptr_t SteamVersionGameBaseAddress = Read<uintptr_t>(GameModuleAddress + 0x331C50);
@@ -553,61 +564,22 @@ void pvzManager::DisablePauseSpawn()
 
 void pvzManager::EnableInstantBurn()
 {
-	if (VersionResult == 0) {
-		return;
-	}else if(VersionResult == 1){
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.instantBurnOffset), { 0x90,0x90 });
 }
 
 void pvzManager::DisableInstantBurn()
 {
-	if (VersionResult == 0) {
-		return;
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x75,0x06 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x69802), { 0x75,0x06 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.instantBurnOffset), { 0x75,0x06 });
 }
 
 void pvzManager::EnableAllBurn()
 {
-	if(VersionResult == 0){
-		return;
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6C942), { 0x90,0x90 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6C942), { 0x90,0x90 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.allBurnOffset), { 0x90,0x90 });
 }
 
 void pvzManager::DisableAllBurn()
 {
-	if (VersionResult == 0) {
-		return;
-	}
-	else if (VersionResult == 1) {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("popcapgame1.exe");
-		WriteBytes((GameModuleAddress + 0x6C942), { 0x75,0x39 });
-	}
-	else {
-		uintptr_t GameModuleAddress = memory::GetModuleAddress("PlantsVsZombies.exe");
-		WriteBytes((GameModuleAddress + 0x6C942), { 0x75,0x39 });
-	}
+	WriteBytes((m_ModuleAddress + m_Offsets.allBurnOffset), { 0x75,0x39 });
 }
 
 
