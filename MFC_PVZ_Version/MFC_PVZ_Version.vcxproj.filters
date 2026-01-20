@@ -25,6 +25,18 @@
     <Filter Include="GameOffset">
       <UniqueIdentifier>{c72d6990-3c3c-4478-95c1-ef498448ba02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="manager\zombieManager">
+      <UniqueIdentifier>{4e2f6be0-6d48-4ee1-90ec-3de56220c03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager\baseManager">
+      <UniqueIdentifier>{e661fdea-6f85-498a-ab7d-61b5c65454ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager\plantManager">
+      <UniqueIdentifier>{6bf6876a-0fa2-4399-ad3a-bff50d4d98b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager\systemManager">
+      <UniqueIdentifier>{bc03344e-29ba-4a8a-b3ed-1be71150e479}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_PVZ_Version.cpp">
@@ -44,6 +56,18 @@
     </ClCompile>
     <ClCompile Include="GameOffset\GameOffset.cpp">
       <Filter>GameOffset</Filter>
+    </ClCompile>
+    <ClCompile Include="module\manage\BaseManager\baseManager.cpp">
+      <Filter>manager\baseManager</Filter>
+    </ClCompile>
+    <ClCompile Include="module\manage\SystemManager\systemManager.cpp">
+      <Filter>manager\systemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="module\manage\PlantManager\plantManager.cpp">
+      <Filter>manager\plantManager</Filter>
+    </ClCompile>
+    <ClCompile Include="module\manage\ZombieManager\zombieManager.cpp">
+      <Filter>manager\zombieManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +111,18 @@
     </ClInclude>
     <ClInclude Include="GameOffset\GameOffset.h">
       <Filter>GameOffset</Filter>
+    </ClInclude>
+    <ClInclude Include="module\manage\BaseManager\baseManager.h">
+      <Filter>manager\baseManager</Filter>
+    </ClInclude>
+    <ClInclude Include="module\manage\SystemManager\systemManager.h">
+      <Filter>manager\systemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="module\manage\PlantManager\plantManager.h">
+      <Filter>manager\plantManager</Filter>
+    </ClInclude>
+    <ClInclude Include="module\manage\ZombieManager\zombieManager.h">
+      <Filter>manager\zombieManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

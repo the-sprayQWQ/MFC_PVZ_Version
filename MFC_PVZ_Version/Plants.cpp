@@ -125,7 +125,7 @@ void Plants::SetSun()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	pvzManager pvzManager;
-	pvzManager.SetSunlight(9999);
+	pvzManager.system.SetSunlight(9999);
 }
 
 void Plants::AddZombies()
@@ -134,7 +134,7 @@ void Plants::AddZombies()
 	int Row = GetDlgItemInt(IDC_EDIT7, NULL, FALSE);
 	int zType = GetDlgItemInt(IDC_EDIT8, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.AddZombies(Row, zType);
+	pvzManager.zombies.AddZombies(Row, zType);
 }
 
 void Plants::Cooldown()
@@ -145,12 +145,12 @@ void Plants::Cooldown()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnableNoCooldown();
+		pvzManager.system.EnableNoCooldown();
 	}
 	else {
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisableNoCooldown();
+		pvzManager.system.DisableNoCooldown();
 	}
 }
 
@@ -162,12 +162,12 @@ void Plants::AutoCollect()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnableAutoCollect();
+		pvzManager.system.EnableAutoCollect();
 	}
 	else { 
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisableAutoCollect();
+		pvzManager.system.DisableAutoCollect();
 	}
 }
 
@@ -179,12 +179,12 @@ void Plants::PeaDamage()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnablePeaDamage();
+		pvzManager.plant.EnablePeaDamage();
 	}
 	else {
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisablePeaDamage();
+		pvzManager.plant.DisablePeaDamage();
 	}
 }
 
@@ -196,12 +196,12 @@ void Plants::NoPause()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnableNoPause();
+		pvzManager.system.EnableNoPause();
 	}
 	else {
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisableNoPause();
+		pvzManager.system.DisableNoPause();
 	}
 }
 
@@ -210,7 +210,7 @@ void Plants::GetProps()
 	// TODO: 在此添加控件通知处理程序代码
 	int zType = GetDlgItemInt(IDC_EDIT9, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.GetProps(zType);
+	pvzManager.system.GetProps(zType);
 }
 
 void Plants::PlantSpeed()
@@ -221,12 +221,12 @@ void Plants::PlantSpeed()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnablePlantSpeed();
+		pvzManager.plant.EnablePlantSpeed();
 	}
 	else {
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisablePlantSpeed();
+		pvzManager.plant.DisablePlantSpeed();
 	}
 }
 
@@ -237,7 +237,7 @@ void Plants::SetPlant()
 	int Row = GetDlgItemInt(IDC_EDIT5, NULL, FALSE);
 	int pType = GetDlgItemInt(IDC_EDIT6, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.SetPlant(Column, Row, pType);
+	pvzManager.plant.SetPlant(Column, Row, pType);
 }
 
 void Plants::FlowerEat()
@@ -249,12 +249,12 @@ void Plants::FlowerEat()
 	if (state == 1) {
 		// 勾选：调用开启函数
 		pvzManager pvzManager;
-		pvzManager.EnableFlowerEat();
+		pvzManager.plant.EnableFlowerEat();
 	}
 	else {
 		// 取消勾选：调用还原函数
 		pvzManager pvzManager;
-		pvzManager.DisableFlowerEat();
+		pvzManager.plant.DisableFlowerEat();
 	}
 }
 
@@ -265,14 +265,14 @@ void Plants::ChangePlantColor()
 	int Green = GetDlgItemInt(IDC_EDIT2, NULL, FALSE);
 	int Blue = GetDlgItemInt(IDC_EDIT3, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.ChangePlantColor(Red, Green, Blue);
+	pvzManager.plant.ChangePlantColor(Red, Green, Blue);
 }
 
 void Plants::RestorePlantColor()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	pvzManager pvzManager;
-	pvzManager.restorePlantColor();
+	pvzManager.plant.restorePlantColor();
 }
 
 
@@ -282,11 +282,11 @@ void Plants::ChangeZombie()
 	int state = ((CButton*)GetDlgItem(IDC_CHANGEZOMBIE))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableChangeZombie(0,0);
+		pvzManager.zombies.EnableChangeZombie(0,0);
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableChangeZombie();
+		pvzManager.zombies.DisableChangeZombie();
 	}
 }
 
@@ -296,11 +296,11 @@ void Plants::ChangePea()
 	int state = ((CButton*)GetDlgItem(IDC_CHANGEPEA))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableChangePea(1);
+		pvzManager.plant.EnableChangePea(1);
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableChangePea();
+		pvzManager.plant.DisableChangePea();
 	}
 }
 
@@ -310,11 +310,11 @@ void Plants::ChangeNut()
 	int state = ((CButton*)GetDlgItem(IDC_CHANGENUT))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableChangeNut();
+		pvzManager.plant.EnableChangeNut();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableChangeNut();
+		pvzManager.plant.DisableChangeNut();
 	}
 }
 
@@ -324,11 +324,11 @@ void Plants::NoCrater()
 	int state = ((CButton*)GetDlgItem(IDC_NOCRATER))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableNoCrater();
+		pvzManager.plant.EnableNoCrater();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableNoCrater();
+		pvzManager.plant.DisableNoCrater();
 	}
 }
 
@@ -338,11 +338,11 @@ void Plants::InfinityFreeze()
 	int state = ((CButton*)GetDlgItem(IDC_INFINITYFREEZE))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableInfinityFreeze();
+		pvzManager.plant.EnableInfinityFreeze();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableInfinityFreeze();
+		pvzManager.plant.DisableInfinityFreeze();
 	}
 }
 
@@ -352,11 +352,11 @@ void Plants::FlowerAttck()
 	int state = ((CButton*)GetDlgItem(IDC_FLOWERATTCK))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableFlowerAttck();
+		pvzManager.plant.EnableFlowerAttck();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableFlowerAttck();
+		pvzManager.plant.DisableFlowerAttck();
 	}
 }
 
@@ -366,11 +366,11 @@ void Plants::MineeTime()
 	int state = ((CButton*)GetDlgItem(IDC_MINEETIME))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableMineeTime();
+		pvzManager.plant.EnableMineeTime();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableMineeTime();
+		pvzManager.plant.DisableMineeTime();
 	}
 }
 
@@ -380,11 +380,11 @@ void Plants::InstantExplosion()
 	int state = ((CButton*)GetDlgItem(IDC_INSTANTEXPLOSION))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableInstantExplosion();
+		pvzManager.plant.EnableInstantExplosion();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableInstantExplosion();
+		pvzManager.plant.DisableInstantExplosion();
 	}
 }
 
@@ -394,11 +394,11 @@ void Plants::AshPlant()
 	int state = ((CButton*)GetDlgItem(IDC_ASHPLANT))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableAshPlant();
+		pvzManager.plant.EnableAshPlant();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableAshPlant();
+		pvzManager.plant.DisableAshPlant();
 	}
 }
 
@@ -408,7 +408,7 @@ void Plants::ChangePlant()
 	int plaidPos = GetDlgItemInt(IDC_EDIT10, NULL, FALSE);
 	int plantType = GetDlgItemInt(IDC_EDIT11, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.ChangePlant(plaidPos, plantType);
+	pvzManager.plant.ChangePlant(plaidPos, plantType);
 
 }
 
@@ -418,11 +418,11 @@ void Plants::MushroomAwakening()
 	int state = ((CButton*)GetDlgItem(IDC_MUSHROOMAWAKENING))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableMushroomAwakening();
+		pvzManager.plant.EnableMushroomAwakening();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableMushroomAwakening();
+		pvzManager.plant.DisableMushroomAwakening();
 	}
 }
 
@@ -432,11 +432,11 @@ void Plants::ChangeButter()
 	int state = ((CButton*)GetDlgItem(IDC_CHANGEBUTTER))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableChangeButter();
+		pvzManager.plant.EnableChangeButter();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableChangeButter();
+		pvzManager.plant.DisableChangeButter();
 	}
 }
 
@@ -445,7 +445,7 @@ void Plants::ChangeLevel()
 	// TODO: 在此添加控件通知处理程序代码
 	int Level = GetDlgItemInt(IDC_EDIT12, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.ChangeLevel(Level);
+	pvzManager.system.ChangeLevel(Level);
 }
 
 void Plants::PlantingZombies()
@@ -455,7 +455,7 @@ void Plants::PlantingZombies()
 	int row = GetDlgItemInt(IDC_EDIT14, NULL, FALSE);
 	int zType = GetDlgItemInt(IDC_EDIT15, NULL, FALSE);
 	pvzManager pvzManager;
-	pvzManager.SetZombies(column, row, zType);
+	pvzManager.zombies.SetZombies(column, row, zType);
 }
 
 
@@ -463,7 +463,7 @@ void Plants::AllEnchant()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	pvzManager pvzManager;
-	pvzManager.AllEnchant();
+	pvzManager.plant.AllEnchant();
 }
 
 void Plants::AllAttck()
@@ -485,11 +485,11 @@ void Plants::InfinityZombie()
 	int state = ((CButton*)GetDlgItem(IDC_INFINITYZOMBIE))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableInfinityZombies();
+		pvzManager.zombies.EnableInfinityZombies();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableInfinityZombies();
+		pvzManager.zombies.DisableInfinityZombies();
 	}
 }
 
@@ -499,11 +499,11 @@ void Plants::PauseSpawn()
 	int state = ((CButton*)GetDlgItem(IDC_PAUSESPAWN))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnablePauseSpawn();
+		pvzManager.zombies.EnablePauseSpawn();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisablePauseSpawn();
+		pvzManager.zombies.DisablePauseSpawn();
 	}
 }
 
@@ -513,7 +513,7 @@ void Plants::OnTimer(UINT_PTR nIDEvent)
 	pvzManager pvzManager;
 	if (nIDEvent == 1) {
 		
-		pvzManager.AllAttack();
+		pvzManager.zombies.AllAttack();
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
@@ -522,7 +522,7 @@ void Plants::ReduceHealth()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	pvzManager pvzManager;
-	pvzManager.ReduceHealth();
+	pvzManager.system.ReduceHealth();
 }
 
 void Plants::InstantBurn()
@@ -531,10 +531,10 @@ void Plants::InstantBurn()
 	int state = ((CButton*)GetDlgItem(IDC_INSTANTBURN))->GetCheck();
 	if(state == 1){
 		pvzManager pvzManager;
-		pvzManager.EnableInstantBurn();
+		pvzManager.plant.EnableInstantBurn();
 	}else{
 		pvzManager pvzManager;
-		pvzManager.DisableInstantBurn();
+		pvzManager.plant.DisableInstantBurn();
 	}
 }
 
@@ -544,10 +544,10 @@ void Plants::AllBurn()
 	int state = ((CButton*)GetDlgItem(IDC_ALLBURN))->GetCheck();
 	if (state == 1) {
 		pvzManager pvzManager;
-		pvzManager.EnableAllBurn();
+		pvzManager.plant.EnableAllBurn();
 	}
 	else {
 		pvzManager pvzManager;
-		pvzManager.DisableAllBurn();
+		pvzManager.plant.DisableAllBurn();
 	}
 }
