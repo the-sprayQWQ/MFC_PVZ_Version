@@ -90,7 +90,7 @@ void zombieManager::DisableInfinityZombies()
 
 void zombieManager::EnablePauseSpawn()
 {
-	WriteBytes((m_ModuleAddress + m_Offsets.pauseSpawnOffset), { 0x90,0x90,0x90,0x90,0x90,0x90,0x90 });
+	WriteBytes((m_ModuleAddress + m_Offsets.pauseSpawnOffset), m_Offsets.pauseSpawnData);
 }
 
 void zombieManager::DisablePauseSpawn()

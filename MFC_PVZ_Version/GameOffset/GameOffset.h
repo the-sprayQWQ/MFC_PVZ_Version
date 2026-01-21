@@ -46,6 +46,7 @@ struct GameOffset
 	uintptr_t instantBurnOffset;
 	uintptr_t allBurnOffset;
 	std::vector<unsigned char>restoreSpawnData;
+	std::vector<unsigned char>pauseSpawnData;
 	std::vector<unsigned char>infinityZombieData;
 	std::vector<unsigned char>restoreZombieData;
 	std::vector<unsigned char>restoreAshPlantData1;
