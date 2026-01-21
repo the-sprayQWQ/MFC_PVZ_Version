@@ -121,3 +121,13 @@ void systemManager::ReduceHealth()
 	}
 }
 
+void systemManager::EnableColumnPlant()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.columnPlantOffset), { 0x90,0x90,0x90,0x90,0x90,0x90 });
+}
+
+void systemManager::DisableColumnPlant()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.columnPlantOffset), m_Offsets.restorePlantData);
+}
+

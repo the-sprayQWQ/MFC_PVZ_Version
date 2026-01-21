@@ -45,6 +45,8 @@ struct GameOffset
 	uintptr_t zombieMaxNumOffset;
 	uintptr_t instantBurnOffset;
 	uintptr_t allBurnOffset;
+	uintptr_t columnPlantOffset;
+	std::vector<unsigned char>restorePlantData;
 	std::vector<unsigned char>restoreSpawnData;
 	std::vector<unsigned char>pauseSpawnData;
 	std::vector<unsigned char>infinityZombieData;

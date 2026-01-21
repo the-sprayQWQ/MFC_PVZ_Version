@@ -21,5 +21,9 @@ public:
     void DisableNoPause();
     //全屏扣血秒杀
     void ReduceHealth();
+
+    //开启与关闭竖排种植
+    void EnableColumnPlant();
+    void DisableColumnPlant();
 };
 

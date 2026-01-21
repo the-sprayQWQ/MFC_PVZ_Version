@@ -55,6 +55,8 @@ GameOffset GameOffset::GetSteamVersion()
 	data.zombieMaxNumOffset = 0xAC;
 	data.instantBurnOffset = 0x69802;
 	data.allBurnOffset = 0x6C942;
+	data.columnPlantOffset = 0x14007;
+	data.restorePlantData = { 0x0F,0x85,0xE3,0x00,0x00,0x00 };
 	return data;
 }
 
@@ -114,5 +116,7 @@ GameOffset GameOffset::GetChineseVersion()
 	data.zombieMaxNumOffset = 0x98;
 	data.instantBurnOffset = 0x63408;
 	data.allBurnOffset = 0x664F2;
+	data.columnPlantOffset = 0x10AE6;
+	data.restorePlantData = { 0x0F,0x85,0xE5,0x00,0x00,0x00 };
 	return data;
 }

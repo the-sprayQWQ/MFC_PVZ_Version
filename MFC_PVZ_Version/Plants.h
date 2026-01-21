@@ -57,4 +57,5 @@ public:
 	afx_msg void ReduceHealth();
 	afx_msg void InstantBurn();
 	afx_msg void AllBurn();
+	afx_msg void ColumnPlant();
 };
