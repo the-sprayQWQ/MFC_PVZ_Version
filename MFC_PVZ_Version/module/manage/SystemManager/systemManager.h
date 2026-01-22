@@ -25,5 +25,9 @@ public:
     //开启与关闭竖排种植
     void EnableColumnPlant();
     void DisableColumnPlant();
+
+    //开启与关闭重叠种植
+    void EnableInterCropping();
+    void DisableInterCropping();
 };
 

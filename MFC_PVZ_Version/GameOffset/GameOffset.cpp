@@ -118,5 +118,6 @@ GameOffset GameOffset::GetChineseVersion()
 	data.allBurnOffset = 0x664F2;
 	data.columnPlantOffset = 0x10AE6;
 	data.restorePlantData = { 0x0F,0x85,0xE5,0x00,0x00,0x00 };
+	data.interCroppingOffset = 0xFE2F;
 	return data;
 }

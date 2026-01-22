@@ -131,3 +131,13 @@ void systemManager::DisableColumnPlant()
 	WriteBytes((m_ModuleAddress + m_Offsets.columnPlantOffset), m_Offsets.restorePlantData);
 }
 
+void systemManager::EnableInterCropping()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.interCroppingOffset), {0xE9,0x20,0x09,0x00,0x00,0x90});
+}
+
+void systemManager::DisableInterCropping()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.interCroppingOffset), { 0x0F,0x84,0x1F,0x09,0x00,0x00 });
+}
+

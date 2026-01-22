@@ -46,6 +46,7 @@ struct GameOffset
 	uintptr_t instantBurnOffset;
 	uintptr_t allBurnOffset;
 	uintptr_t columnPlantOffset;
+	uintptr_t interCroppingOffset;
 	std::vector<unsigned char>restorePlantData;
 	std::vector<unsigned char>restoreSpawnData;
 	std::vector<unsigned char>pauseSpawnData;
