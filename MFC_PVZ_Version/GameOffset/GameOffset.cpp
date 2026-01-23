@@ -124,5 +124,7 @@ GameOffset GameOffset::GetChineseVersion()
 	data.interCroppingOffset = 0xFE2F;
 	data.interCroppingData = { 0xE9,0x20,0x09,0x00,0x00,0x90 };
 	data.restoreCroppingData = { 0x0F,0x84,0x1F,0x09,0x00,0x00 };
+	data.allEatOffset1 = 0x6144A;
+	data.allEatOffset2 = 0x6144F;
 	return data;
 }

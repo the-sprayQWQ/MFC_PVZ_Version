@@ -54,8 +54,9 @@
 #define IDC_ALLBURN                     1049
 #define IDC_CHECK1                      1050
 #define IDC_COLUMNPLANT                 1050
-#define IDC_INTER                       1051
 #define IDC_INTERCROPPING               1051
+#define IDC_CHECK2                      1052
+#define IDC_ALLEAT                      1052
 
 // Next default values for new objects
 // 
@@ -63,7 +64,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1052
+#define _APS_NEXT_CONTROL_VALUE         1053
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif

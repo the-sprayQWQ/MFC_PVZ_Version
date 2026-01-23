@@ -342,3 +342,15 @@ void plantManager::DisableAllBurn()
 {
 	WriteBytes((m_ModuleAddress + m_Offsets.allBurnOffset), { 0x75,0x39 });
 }
+
+void plantManager::EnableAllEat()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allEatOffset1), { 0x74,0x0C });
+	WriteBytes((m_ModuleAddress + m_Offsets.allEatOffset2), { 0x74,0x07 });
+}
+
+void plantManager::DisableAllEat()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allEatOffset1), { 0x74,0x0A });
+	WriteBytes((m_ModuleAddress + m_Offsets.allEatOffset2), { 0x74,0x05 });
+}

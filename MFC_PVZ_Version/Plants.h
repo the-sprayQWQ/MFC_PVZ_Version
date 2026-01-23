@@ -59,4 +59,5 @@ public:
 	afx_msg void AllBurn();
 	afx_msg void ColumnPlant();
 	afx_msg void InterCropping();
+	afx_msg void AllEat();
 };

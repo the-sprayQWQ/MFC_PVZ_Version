@@ -86,5 +86,8 @@ public:
     //开启与关闭火爆辣椒全屏秒杀
     void EnableAllBurn();
     void DisableAllBurn();
+    //开启与关闭万物皆可吃
+    void EnableAllEat();
+    void DisableAllEat();
 };
 
