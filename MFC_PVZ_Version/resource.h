@@ -57,6 +57,9 @@
 #define IDC_INTERCROPPING               1051
 #define IDC_CHECK2                      1052
 #define IDC_ALLEAT                      1052
+#define IDC_ALLSTATUSKILL               1055
+#define IDC_CHECK4                      1056
+#define IDC_ALLNOMOVE                   1056
 
 // Next default values for new objects
 // 
@@ -64,7 +67,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1053
+#define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif

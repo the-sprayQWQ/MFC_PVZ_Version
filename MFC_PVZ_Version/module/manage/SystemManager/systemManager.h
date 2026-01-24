@@ -22,6 +22,14 @@ public:
     //全屏扣血秒杀
     void ReduceHealth();
 
+    //开启与关闭全屏状态秒杀
+    void EnableAllStatusKill();
+    void DisableAllStatusKill();
+
+    //开启与关闭全屏定身
+    void EnableAllNoMove();
+    void DisableAllNoMove();
+
     //开启与关闭竖排种植
     void EnableColumnPlant();
     void DisableColumnPlant();

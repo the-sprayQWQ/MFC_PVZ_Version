@@ -68,6 +68,8 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_COLUMNPLANT, &Plants::ColumnPlant)
 	ON_BN_CLICKED(IDC_INTERCROPPING, &Plants::InterCropping)
 	ON_BN_CLICKED(IDC_ALLEAT, &Plants::AllEat)
+	ON_BN_CLICKED(IDC_ALLSTATUSKILL, &Plants::AllStatusKill)
+	ON_BN_CLICKED(IDC_ALLNOMOVE, &Plants::AllNoMove)
 END_MESSAGE_MAP()
 
 
@@ -594,5 +596,33 @@ void Plants::AllEat()
 	else {
 		pvzManager pvzManager;
 		pvzManager.plant.DisableAllEat();
+	}
+}
+
+void Plants::AllStatusKill()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLSTATUSKILL))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.system.EnableAllStatusKill();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.system.DisableAllStatusKill();
+	}
+}
+
+void Plants::AllNoMove()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLNOMOVE))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.system.EnableAllNoMove();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.system.DisableAllNoMove();
 	}
 }

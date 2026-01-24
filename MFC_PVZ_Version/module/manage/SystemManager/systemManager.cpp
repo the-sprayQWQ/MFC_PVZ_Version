@@ -121,6 +121,26 @@ void systemManager::ReduceHealth()
 	}
 }
 
+void systemManager::EnableAllStatusKill()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allStatusKillOffset), { 0x90,0x90 });
+}
+
+void systemManager::DisableAllStatusKill()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allStatusKillOffset), { 0x75,0x0C });
+}
+
+void systemManager::EnableAllNoMove()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allNoMoveOffset), { 0x90,0x90 });
+}
+
+void systemManager::DisableAllNoMove()
+{
+	WriteBytes((m_ModuleAddress + m_Offsets.allNoMoveOffset), { 0x75,0x1D });
+}
+
 void systemManager::EnableColumnPlant()
 {
 	WriteBytes((m_ModuleAddress + m_Offsets.columnPlantOffset), { 0x90,0x90,0x90,0x90,0x90,0x90 });

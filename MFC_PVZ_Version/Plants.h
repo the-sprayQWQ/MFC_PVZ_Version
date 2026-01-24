@@ -60,4 +60,6 @@ public:
 	afx_msg void ColumnPlant();
 	afx_msg void InterCropping();
 	afx_msg void AllEat();
+	afx_msg void AllStatusKill();
+	afx_msg void AllNoMove();
 };
