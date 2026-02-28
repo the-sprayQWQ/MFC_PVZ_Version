@@ -6,6 +6,8 @@ class systemManager :
 public:
     //设置阳光
     void SetSunlight(int value);
+    //设置金币
+    void SetCoin(int value);
     //开启与关闭自动收集物品
     void EnableAutoCollect();
     void DisableAutoCollect();

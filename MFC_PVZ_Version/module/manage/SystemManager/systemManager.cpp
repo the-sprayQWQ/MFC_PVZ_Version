@@ -6,6 +6,12 @@ void systemManager::SetSunlight(int value)
 	Write<int>((boardAddress + m_Offsets.SunOffset), value);
 }
 
+void systemManager::SetCoin(int value)
+{
+	uintptr_t coinAddress1 = memory::Read<uintptr_t>(m_GameBase + m_Offsets.coinOffset1);
+	Write<int>((coinAddress1 + m_Offsets.coinOffset2), value);
+}
+
 void systemManager::EnableAutoCollect()
 {
 	WriteByte((m_ModuleAddress + m_Offsets.autoCollectOffset), 0x01);

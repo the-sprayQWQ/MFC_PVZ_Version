@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(Plants, CDialogEx)
 	ON_BN_CLICKED(IDC_COLUMNPLANT, &Plants::ColumnPlant)
 	ON_BN_CLICKED(IDC_INTERCROPPING, &Plants::InterCropping)
 	ON_BN_CLICKED(IDC_ALLEAT, &Plants::AllEat)
+	ON_BN_CLICKED(IDC_BUTTON9, &Plants::SetCoin)
 END_MESSAGE_MAP()
 
 
@@ -595,4 +596,11 @@ void Plants::AllEat()
 		pvzManager pvzManager;
 		pvzManager.plant.DisableAllEat();
 	}
+}
+
+void Plants::SetCoin()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.system.SetCoin(9999);
 }

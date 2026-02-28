@@ -126,5 +126,7 @@ GameOffset GameOffset::GetChineseVersion()
 	data.restoreCroppingData = { 0x0F,0x84,0x1F,0x09,0x00,0x00 };
 	data.allEatOffset1 = 0x6144A;
 	data.allEatOffset2 = 0x6144F;
+	data.coinOffset1 = 0x82C;
+	data.coinOffset2 = 0x28;
 	return data;
 }
