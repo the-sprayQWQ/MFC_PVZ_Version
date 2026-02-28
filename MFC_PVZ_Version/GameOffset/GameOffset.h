@@ -49,6 +49,8 @@ struct GameOffset
 	uintptr_t interCroppingOffset;
 	uintptr_t allEatOffset1;
 	uintptr_t allEatOffset2;
+	uintptr_t allStatusKillOffset;
+	uintptr_t allNoMoveOffset;
 	uintptr_t coinOffset1;
 	uintptr_t coinOffset2;
 	std::vector<unsigned char>restoreCroppingData;

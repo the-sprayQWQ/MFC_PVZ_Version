@@ -60,6 +60,10 @@ GameOffset GameOffset::GetSteamVersion()
 	data.interCroppingOffset = 0x1334F;
 	data.interCroppingData = { 0xE9,0x21,0x09,0x00,0x00,0x90 };
 	data.restoreCroppingData = { 0x0F,0x84,0x20,0x09,0x00,0x00 };
+	data.allEatOffset1 = 0x677E8;
+	data.allEatOffset2 = 0x677ED;
+	data.allStatusKillOffset = 0x13F8E5;
+	data.allNoMoveOffset = 0x13F8C3;
 	return data;
 }
 
@@ -128,5 +132,7 @@ GameOffset GameOffset::GetChineseVersion()
 	data.allEatOffset2 = 0x6144F;
 	data.coinOffset1 = 0x82C;
 	data.coinOffset2 = 0x28;
+	data.allStatusKillOffset = 0x12AEF6;
+	data.allNoMoveOffset = 0x12AED4;
 	return data;
 }
