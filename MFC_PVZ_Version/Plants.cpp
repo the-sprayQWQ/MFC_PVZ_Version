@@ -599,3 +599,36 @@ void Plants::AllEat()
 		pvzManager.plant.DisableAllEat();
 	}
 }
+void Plants::AllStatusKill()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLSTATUSKILL))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.system.EnableAllStatusKill();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.system.DisableAllStatusKill();
+	}
+}
+
+void Plants::AllNoMove()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	int state = ((CButton*)GetDlgItem(IDC_ALLNOMOVE))->GetCheck();
+	if (state == 1) {
+		pvzManager pvzManager;
+		pvzManager.system.EnableAllNoMove();
+	}
+	else {
+		pvzManager pvzManager;
+		pvzManager.system.DisableAllNoMove();
+	}
+}
+void Plants::SetCoin()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	pvzManager pvzManager;
+	pvzManager.system.SetCoin(9999);
+}
